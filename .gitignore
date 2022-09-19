@@ -53,9 +53,17 @@ sysinfo.txt
 
 # Builds
 *.apk
+*.aab
 
 # Crashlytics generated file
 crashlytics-build.properties
 
 # IntelliJ-based IDEs
 .idea/
+
+# Packed Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
