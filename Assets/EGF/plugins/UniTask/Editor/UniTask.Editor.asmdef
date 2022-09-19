@@ -1,15 +1,16 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
+    "name": "UniTask.Editor",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "UniTask"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

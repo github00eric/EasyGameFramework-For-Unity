@@ -1,8 +1,9 @@
 {
-    "name": "Prototypes",
+    "name": "plugins",
     "rootNamespace": "",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "GUID:e048eeec9bdb9d30448017b829deb3f6",
+        "GUID:7d3cfa7e77e51fc459ab37abd6e978f8"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

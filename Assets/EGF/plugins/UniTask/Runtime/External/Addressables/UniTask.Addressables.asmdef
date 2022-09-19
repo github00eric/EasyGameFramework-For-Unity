@@ -1,8 +1,8 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
+    "name": "UniTask.Addressables",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "UniTask",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +11,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.addressables",
+            "expression": "",
+            "define": "UNITASK_ADDRESSABLE_SUPPORT"
+        }
+    ],
     "noEngineReferences": false
 }

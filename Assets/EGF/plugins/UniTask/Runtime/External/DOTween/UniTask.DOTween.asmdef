@@ -1,8 +1,8 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
+    "name": "UniTask.DOTween",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "UniTask",
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +11,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.demigiant.dotween",
+            "expression": "",
+            "define": "UNITASK_DOTWEEN_SUPPORT"
+        }
+    ],
     "noEngineReferences": false
 }

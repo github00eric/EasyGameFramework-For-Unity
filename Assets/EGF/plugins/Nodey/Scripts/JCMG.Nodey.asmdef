@@ -1,9 +1,6 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
-    "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
-    ],
+    "name": "JCMG.Nodey",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

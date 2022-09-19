@@ -1,8 +1,7 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
+    "name": "UniTask.Linq",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

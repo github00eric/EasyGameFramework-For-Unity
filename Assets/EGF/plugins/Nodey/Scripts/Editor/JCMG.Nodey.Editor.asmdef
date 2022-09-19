@@ -1,10 +1,11 @@
 {
-    "name": "Prototypes",
-    "rootNamespace": "",
+    "name": "JCMG.Nodey.Editor",
     "references": [
-        "GUID:313e34aac656a49268b99cf9d4cfea49"
+        "GUID:7d3cfa7e77e51fc459ab37abd6e978f8"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

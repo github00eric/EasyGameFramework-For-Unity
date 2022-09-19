@@ -1,0 +1,14 @@
+{  
+ "name": "eric.easy-game-framework",
+ "displayName": "Easy Game Framework",
+ "description": "Unity简易自用游戏框架EGF的核心框架，用于加速游戏原型开发，内置了多种付费插件，商用请谨慎。",
+ "version": "0.1.2",
+ "unity": "2020.3",
+ "dependencies": {
+ },
+ "repository": {
+  "url": "https://gitee.com/github00eric/custom-unity-package.git",
+  "type": "git",
+  "revision": "7fc5ad70b2bb6ba51a3c04e2293bd44400c0697b"
+ }
+}
