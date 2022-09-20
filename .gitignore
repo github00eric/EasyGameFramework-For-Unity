@@ -6,9 +6,6 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
-ProjectSettings/
-UnityPackageManager/
-Packages/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
