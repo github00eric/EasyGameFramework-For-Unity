@@ -26,8 +26,10 @@
     
 ## 安装
 
-待补充
+Unity 的 Package Manager 支持安装 Git url 包的版本 (Unity >= 2019.3.4f1, Unity >= 2020.1a21). 可以使用 https://github.com/github00eric/EasyGameFramework-For-Unity.git?path=Assets/EGF 安装到 Package Manager。
+
+或者可以克隆该仓库，复制 ./Assets/EGF 路径的文件夹到工程中完成安装。
 
 ## 使用说明
-- 仅供学习用途
+- 当前仅供学习用途
 - 内置付费插件Odin
