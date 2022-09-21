@@ -76,7 +76,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3781422429372698058}
-  - component: {fileID: 4052257030901488578}
+  - component: {fileID: 8555697160124017974}
   m_Layer: 0
   m_Name: UIModule
   m_TagString: Untagged
@@ -99,7 +99,7 @@ Transform:
   m_Father: {fileID: 5017805239757780494}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4052257030901488578
+--- !u!114 &8555697160124017974
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791985184740997159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a672ac26adf6f477fbffecc0e78b6527, type: 3}
+  m_Script: {fileID: 11500000, guid: 170f56a27293f4a0e9ae9a7de4038583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 53775061591216329}
-  - component: {fileID: 6361362754602706992}
+  - component: {fileID: 5806838211851276080}
   m_Layer: 0
   m_Name: Assets
   m_TagString: Untagged
@@ -146,7 +146,7 @@ Transform:
   m_Father: {fileID: 5017805239757780494}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6361362754602706992
+--- !u!114 &5806838211851276080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,14 +155,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4637243240601528531}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9bfac7e68830481784635b7e0b327de, type: 3}
+  m_Script: {fileID: 11500000, guid: ab0e685bad533704b9548b77448ab755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  describe: "\u8D44\u6E90\u52A0\u8F7D\u6A21\u5757\uFF0C\u63D0\u4F9B\u6A21\u5757\u63A5\u53E3
-    > IAsset\n\u4F7F\u7528 Load \u8F7D\u5165\u8D44\u6E90\n\u4F7F\u7528 Instantiate
-    \u5B9E\u4F8B\u5316\u6E38\u620F\u5BF9\u8C61\n\u4F7F\u7528 SwitchScene \u5207\u6362\u573A\u666F\n\u4F7F\u7528
-    AddScene \u52A8\u6001\u6DFB\u52A0\u573A\u666F\n\u4F7F\u7528 RemoveScene \u52A8\u6001\u79FB\u9664\u573A\u666F"
 --- !u!1 &4917242323594011540
 GameObject:
   m_ObjectHideFlags: 0
