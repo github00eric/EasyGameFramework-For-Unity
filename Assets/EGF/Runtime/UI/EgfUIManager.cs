@@ -81,7 +81,7 @@ namespace EGF.Runtime
             if (result == null)
             {
                 Logcat.Info(this,"场景缺少画布，UI自动创建画布中");
-                var temp = Instantiate(defaultCanvas);
+                var temp = Instantiate(defaultCanvas,transform,false);
                 
                 if (temp.renderMode != RenderMode.ScreenSpaceOverlay)
                 {
