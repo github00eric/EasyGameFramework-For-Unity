@@ -1,5 +1,17 @@
 ﻿/* Created by Eric-C.
  * 基本的UI页面脚本
+ *
+ * 生命周期：
+ *
+ * ......Start()
+ * 
+ * OnEnter()        显示
+ * OnViewEnable()   启用交互
+ * OnViewDisable()  禁用交互
+ * OnExit()         隐藏
+ *
+ * OnDisable()......
+ * 
  */
 
 using System;

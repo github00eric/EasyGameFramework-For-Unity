@@ -1,6 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * 让按钮能够调用UI的接口，执行页面间的跳转
+ */
 using UnityEngine;
 using UnityEngine.UI;
 

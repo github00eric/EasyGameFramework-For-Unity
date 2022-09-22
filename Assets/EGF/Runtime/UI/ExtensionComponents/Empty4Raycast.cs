@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/*
+ * 可以替代透明图片，让组件能接受UI点击等事件
+ */
 using UnityEngine.UI;
 
 namespace EGF.Runtime
