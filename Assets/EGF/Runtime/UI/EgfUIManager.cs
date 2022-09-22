@@ -23,11 +23,6 @@ namespace EGF.Runtime
         /// </summary>
         [ShowInInspector, ReadOnly] Camera uiCamera;
 
-        /// <summary>
-        /// 缓存未激活的 Panel 游戏对象
-        /// </summary>
-        Dictionary<string, UiView> panelObjDic;
-        
         // Dictionary<string, UiView> floatPanelObjDic;
 
         /// <summary>
@@ -39,7 +34,6 @@ namespace EGF.Runtime
         
         protected override void Initialization()
         {
-            panelObjDic = new Dictionary<string, UiView>();
             panelStack = new Stack<UiView>();
             canvasTransform = GetCanvasInternal();
 
@@ -48,7 +42,6 @@ namespace EGF.Runtime
 
         protected override void Release()
         {
-            panelObjDic.Clear();
             panelStack.Clear();
             EgfEntry.UnRegisterModule<IUIManager>();
         }
@@ -61,9 +54,6 @@ namespace EGF.Runtime
         /// <returns></returns>
         private UiView GetPanel(string panelKey)
         {
-            panelObjDic.TryGetValue(panelKey, out UiView bp);
-            if (bp != null) return bp;
-
             IAssetLoader assetLoader = EgfEntry.GetModule<IAssetLoader>();
             if (assetLoader == null)
             {
@@ -71,7 +61,7 @@ namespace EGF.Runtime
                 return null;
             }
             // 缓存中没有 UiView 则使用 IAssets 加载
-            bp = assetLoader.Instantiate(panelKey)?.GetComponent<UiView>();
+            UiView bp = assetLoader.Instantiate(panelKey)?.GetComponent<UiView>();
             if (!bp)
             {
                 Logcat.Warning(this,$"加载 UiView {panelKey} 失败。检查指定资源是否标记为可寻址，且添加了UIPanel脚本。");
@@ -80,20 +70,9 @@ namespace EGF.Runtime
 
             bp.transform.SetParent(GetCanvasInternal(), false);
             bp.HideCanvasGroup();
-            panelObjDic.Add(panelKey, bp);
             
             Logcat.Info(this,$"加载 Panel {bp.name} 成功. ");
             return bp;
-        }
-
-        private void DeletePanel(string panelKey)
-        {
-            if (panelObjDic.ContainsKey(panelKey))
-            {
-                var ui = panelObjDic[panelKey];
-                panelObjDic.Remove(panelKey);
-                Destroy(ui.gameObject);
-            }
         }
 
         private Transform GetCanvasInternal()
@@ -151,27 +130,23 @@ namespace EGF.Runtime
         
         private void ShowViewInternal(UiView uiInstance)
         {
-            uiInstance.OnEnter();
-            uiInstance.OnViewEnable();
+            uiInstance.OnEnter(uiInstance.OnViewEnable);
             panelStack.Push(uiInstance);
         }
 
-        private void HideViewInternal(UiView uiInstance)
+        private void ExitViewInternal(UiView uiInstance)
         {
             // UiView bp = panelStack.Pop();
             uiInstance.OnViewDisable();
-            uiInstance.OnExit();
+            uiInstance.OnExit(() =>
+            {
+                Destroy(uiInstance.gameObject);
+            });
         }
         
         // ----------------------------------------------------------------------------------------------------
 
         #region IUIManager
-
-        public UiView ShowFocus(string panelName)
-        {
-            // HACK: 未来移除
-            throw new System.NotImplementedException();
-        }
 
         public Camera GetUiCamera()
         {
@@ -198,9 +173,8 @@ namespace EGF.Runtime
         {
             if (panelStack.Count > 0)
             {
-                UiView top = panelStack.Peek();
-                top.OnViewDisable();
-                top.OnExit();
+                UiView top = panelStack.Pop();
+                ExitViewInternal(top);
             }
             UiView newView = GetPanel(panelName);
             ShowViewInternal(newView);
@@ -218,9 +192,8 @@ namespace EGF.Runtime
 #endif
             if (panelStack.Count > 0)
             {
-                UiView top = panelStack.Peek();
-                top.OnViewDisable();
-                top.OnExit();
+                UiView top = panelStack.Pop();
+                ExitViewInternal(top);
             }
             ShowViewInternal(uiInstance);
             return uiInstance;
@@ -263,21 +236,18 @@ namespace EGF.Runtime
                 return null;
 
             UiView bp = panelStack.Pop();
-            HideViewInternal(bp);
+            ExitViewInternal(bp);
 
             if (panelStack.Count <= 0)
                 return bp;
 
             UiView top = panelStack.Peek();
-            top.OnViewEnable();
+            if (top)
+            {
+                top.OnViewEnable();
+            }
 			
             return bp;
-        }
-
-        public UiView Hide(string panelName)
-        {
-            // TODO: 
-            throw new System.NotImplementedException();
         }
 
         #endregion

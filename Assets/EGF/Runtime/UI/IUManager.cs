@@ -5,11 +5,6 @@ namespace EGF.Runtime
 {
     public interface IUIManager
     {
-        /// <summary>
-        /// 获取和显示新UI，新UI显示在其它UI上方，并暂停其它UI的交互
-        /// </summary>
-        [Obsolete("ShowFocus is Obsolete, Use ShowAdditive instead")]
-        UiView ShowFocus(string panelName);     // --> ShowMask(string panelName)
         // ----------------------------------------------------------------------------------------------------
         
         Camera GetUiCamera();
@@ -48,17 +43,6 @@ namespace EGF.Runtime
         /// 关闭栈顶 UI
         /// </summary>
         UiView Hide();
-
-        /// <summary>
-        /// 普通界面：
-        /// <para>关闭 panelName 界面以及在该界面上层的其它界面</para>
-        /// <para></para>
-        /// 悬浮界面：
-        /// <para>关闭 panelName 界面</para>
-        /// </summary>
-        /// <param name="panelName"></param>
-        /// <returns></returns>
-        UiView Hide(string panelName);
 
     }
 }

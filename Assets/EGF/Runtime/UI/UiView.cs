@@ -47,9 +47,10 @@ namespace EGF.Runtime
         /// <summary>
         /// 显示和激活当前Panel交互
         /// </summary>
-        public virtual void OnEnter()
+        public virtual void OnEnter(Action onComplete)
         {
             ShowCanvasGroup();
+            onComplete();
         }
         
         /// <summary>
@@ -71,9 +72,10 @@ namespace EGF.Runtime
         /// <summary>
         /// 退出当前Panel
         /// </summary>
-        public virtual void OnExit()
+        public virtual void OnExit(Action onComplete)
         {
             HideCanvasGroup();
+            onComplete();
         }
 
         /// <summary>
@@ -92,21 +94,6 @@ namespace EGF.Runtime
         public virtual void OnResume()
         {
             CanvasGroup.interactable = true;
-        }
-        
-        private Action _onDestroyCallback;
-
-        /// <summary>
-        /// 监听Panel的销毁，在销毁时执行指定的行为。
-        /// </summary>
-        /// <param name="onDestroy"></param>
-        internal void AddOnDestroyListener(Action onDestroy)
-        {
-            _onDestroyCallback = onDestroy;
-        }
-        protected virtual void OnDestroy()
-        {
-            _onDestroyCallback?.Invoke();
         }
     }
 }
