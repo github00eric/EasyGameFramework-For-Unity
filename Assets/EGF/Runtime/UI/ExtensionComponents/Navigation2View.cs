@@ -16,6 +16,7 @@ namespace EGF.Runtime
         {
             Show,
             ShowAdd,
+            Hide,
         }
         
         void Start()
@@ -40,6 +41,9 @@ namespace EGF.Runtime
                     break;
                 case NavigationType.ShowAdd:
                     EgfEntry.GetModule<IUIManager>()?.ShowAdditive(target);
+                    break;
+                case NavigationType.Hide:
+                    EgfEntry.GetModule<IUIManager>()?.Hide();
                     break;
             }
         }
