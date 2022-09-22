@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170f56a27293f4a0e9ae9a7de4038583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
+  dontDestroyOnLoad: 1
   describe: "UI\u6A21\u5757\uFF0C\u63D0\u4F9BUI\u529F\u80FD\u63A5\u53E3 > IUIManager"
   defaultCanvas: {fileID: 9056320502326449715, guid: 4209594470e0349679404df7405ac339, type: 3}
 --- !u!114 &183822086
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 936836100}
   - component: {fileID: 936836099}
   m_Layer: 0
-  m_Name: Start
+  m_Name: DemoStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

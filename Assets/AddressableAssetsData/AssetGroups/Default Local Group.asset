@@ -16,7 +16,19 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: da29e410826974ceb8c98143dc95f4cf
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: c2e59cffa40b547dca9c84c4e9079ed8
+    m_Address: StartPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f348c00b2db584055af427cc1162f7da
+    m_Address: SubPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5596865d14e7344e68b23236d4cc2878
+    m_Address: AddPanel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81db165d00ae14ac98546726d72e3f88, type: 2}
   m_SchemaSet:
