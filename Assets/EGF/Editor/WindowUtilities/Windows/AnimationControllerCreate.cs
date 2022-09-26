@@ -42,9 +42,13 @@ namespace EGF.Editor
          Multiline]
         public string outputEnumName;
         
-        [LabelText("选中的动画片段文件")]
-        [InfoBox("创建前请检查动画片段文件名，不要含符号，且文件名能概述动画内容。")]
+        [LabelText("选中的动画片段文件 - 作为状态")]
+        [InfoBox("创建前请检查动画片段文件名，小写，空格分隔，不要含其它符号，且文件名能概述动画内容。")]
         public List<AnimationClip> selectedAnimationClips = new List<AnimationClip>();
+
+        [LabelText("选中的动画片段文件 - 随时调用")]
+        [InfoBox("创建前请检查动画片段文件名，小写，空格分隔，不要含其它符号，且文件名能概述动画内容。")]
+        public List<AnimationClip> aloneAnimationClips = new List<AnimationClip>();
 
         // private void OnSelectionChange()
         // {
@@ -63,7 +67,7 @@ namespace EGF.Editor
 
         private bool CheckIfReady()
         {
-            if (string.IsNullOrEmpty(controllerFileName) || string.IsNullOrEmpty(createPath) || selectedAnimationClips.Count < 1)
+            if (string.IsNullOrEmpty(controllerFileName) || string.IsNullOrEmpty(createPath) || (selectedAnimationClips.Count < 1 && aloneAnimationClips.Count < 1))
             {
                 return false;
             }
@@ -96,13 +100,13 @@ namespace EGF.Editor
             int clipId = 0;
             foreach (var t in selectedAnimationClips)
             {
-                // 在状态机里创建state
-                var state = rootStateMachine.AddState(t.name);
-
                 // 输出状态名，方便开发者创建enum进行管理
                 var tempName = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(t.name);
-                tempName = tempName.Replace(" ", "");
+                tempName = tempName.Replace(" ", "") + clipId;
                 outputEnumName += tempName + ",\n";
+                
+                // 在状态机里创建state
+                var state = rootStateMachine.AddState(tempName);
                 
                 // 把animation clip填入state的Motion里
                 state.motion = t as Motion;
@@ -112,11 +116,34 @@ namespace EGF.Editor
                 stateMachineTransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.Equals, clipId, "statusId");
                 // 把“canTransitionToSelf ”设成false，避免卡死在动画第一帧。
                 stateMachineTransition.canTransitionToSelf = false;
+                // 有退出时间
+                stateMachineTransition.hasExitTime = true;
+                stateMachineTransition.exitTime = 1;
                 // 跳转过度周期设成0.2秒
                 stateMachineTransition.duration = 0.2f;
 
                 clipId += 1; // 最后id递增
             }
+
+            foreach (var t in aloneAnimationClips)
+            {
+                var tempName = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToLower(t.name);
+                tempName = tempName.Replace(" ", "_");
+                outputEnumName += tempName + ",\n";
+                
+                // 在状态机里创建state
+                var state = rootStateMachine.AddState(tempName);
+                
+                // 把animation clip填入state的Motion里
+                state.motion = t as Motion;
+                
+                /* HACK：不再需要连接状态
+                 * 使用 Animator.CrossFade 或 Animator.CrossFadeInFixedTime 即可播放带过渡的动画
+                 * 
+                */
+            }
+            
+            Debug.Log($"outputEnumName = \n{outputEnumName}");
         }
         
         
