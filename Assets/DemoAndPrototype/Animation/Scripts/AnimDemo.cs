@@ -41,29 +41,10 @@ public class AnimDemo : MonoBehaviour
         
         // await animator.PlayOnce("jump-forward");
         // await animator.PlayOnce("RifleRun2");
-        float startTime = Time.timeSinceLevelLoad;
         
-        await animator.PlayOnce("start-walking-backwards",0,0,0.3f);
-        
-        float usedTime = Time.timeSinceLevelLoad - startTime;
-        Debug.Log($"1 Time Using: {usedTime}");
-        startTime = Time.timeSinceLevelLoad;
-        
+        await animator.PlayOnce("start-walking-backwards");
         await animator.PlayOnce("walking-backwards",0,0,0.15f,0.8f);
-        
-        usedTime = Time.timeSinceLevelLoad - startTime;
-        Debug.Log($"2 Time Using: {usedTime}");
-        startTime = Time.timeSinceLevelLoad;
-        
         await animator.PlayOnce("walk-backwards-stop");
-        
-        usedTime = Time.timeSinceLevelLoad - startTime;
-        Debug.Log($"3 Time Using: {usedTime}");
-        startTime = Time.timeSinceLevelLoad;
-        
         await animator.PlayOnce("Walking1");
-        
-        usedTime = Time.timeSinceLevelLoad - startTime;
-        Debug.Log($"4 Time Using: {usedTime}");
     }
 }
