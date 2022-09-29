@@ -6,12 +6,18 @@ using UnityEngine;
 
 namespace EGF.Runtime
 {
-    // TODO: 直接过渡到指定动画状态播放一次
-    // TODO: 直接过渡到指定动画状态播放一次，且播放持续时间将强制更改为指定时间
+    // PlayOnce 直接过渡到指定动画状态播放一次
+    // WaitForSeconds 指定时间，等待几秒
+    // TODO: PlayOnceInFixedTime 直接过渡到指定动画状态播放一次，且播放持续时间将强制更改为指定时间
     // TODO: 切换播放状态
     // TODO: 整体播放速度设置（要考虑功能2对播放速度的影响）
+    // HACK: 需要考虑跳转到自身状态可能引起无限等待，也许需要超时取消？
     public static class AnimatorExtension
     {
+        // （实测过渡时间不是很精确，且动画相关操作要在 FixedUpdate 中进行）
+        // CrossFade 是按照动画的自身时间进行混合。如果动画10秒，混合持续时间0.2，会在大概2秒后混合完成
+        // CrossFadeInFixedTime 是按照实际时间进行混合。如果动画10秒，混合持续时间0.2，会在0.2秒后混合完成
+
         private static readonly int StatusId = Animator.StringToHash("statusId");
         
         /// <summary>
@@ -31,14 +37,15 @@ namespace EGF.Runtime
             animator.CrossFade(stateName, normalizedTransition, layer, normalizedStartTime);
 
             bool WaitStateChange() => animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == currentStateInfo.fullPathHash || animator.GetCurrentAnimatorClipInfoCount(layer) < 1;
-            await UniTask.WaitWhile(WaitStateChange,PlayerLoopTiming.FixedUpdate);      // HACK: 是否需要超时取消？
-
-            // currentStateInfo = animator.GetCurrentAnimatorStateInfo(layer);
-            // var exitTime = (normalizedExitTime - currentStateInfo.normalizedTime) * currentStateInfo.length;
-            // await UniTask.Delay(TimeSpan.FromSeconds(exitTime), DelayType.DeltaTime, PlayerLoopTiming.FixedUpdate);
+            await UniTask.WaitWhile(WaitStateChange,PlayerLoopTiming.FixedUpdate);      // HACK: 需要考虑跳转到自身状态可能引起无限等待，也许需要超时取消？
             
             bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
             await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);
+        }
+
+        public static async UniTask WaitForSeconds(this Animator animator, double waitTime, DelayType delayType = DelayType.DeltaTime)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), delayType, PlayerLoopTiming.FixedUpdate);
         }
 
         public static async UniTask PlayOnceTest(this Animator animator ,string stateName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.15f, float normalizedExitTime = 0.8f)
@@ -153,12 +160,15 @@ namespace EGF.Runtime
         /// <returns></returns>
         public static async UniTask PlayOnce(this Animator animator ,int stateHashName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.15f, float normalizedExitTime = 0.8f)
         {
+            var currentStateInfo = animator.GetCurrentAnimatorStateInfo(layer);
+            
             animator.CrossFade(stateHashName, normalizedTransition, layer, normalizedStartTime);
-        
-            var currentClip = animator.GetCurrentAnimatorClipInfo(layer)[0].clip;
-            var transitionDuration = currentClip.length * normalizedExitTime;
-        
-            await UniTask.Delay(TimeSpan.FromSeconds(transitionDuration), DelayType.DeltaTime);
+
+            bool WaitStateChange() => animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == currentStateInfo.fullPathHash || animator.GetCurrentAnimatorClipInfoCount(layer) < 1;
+            await UniTask.WaitWhile(WaitStateChange,PlayerLoopTiming.FixedUpdate);
+            
+            bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
+            await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);
         }
         
         /// <summary>
