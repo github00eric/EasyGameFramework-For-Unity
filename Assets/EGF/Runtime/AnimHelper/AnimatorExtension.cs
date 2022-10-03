@@ -30,14 +30,12 @@ namespace EGF.Runtime
         /// <param name="normalizedTransition">过渡耗时(归一化)</param>
         /// <param name="normalizedExitTime">退出时间(归一化)</param>
         /// <returns></returns>
-        public static async UniTask PlayOnce(this Animator animator ,string stateName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.15f, float normalizedExitTime = 0.8f)
+        public static async UniTask PlayOnce(this Animator animator ,string stateName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.25f, float normalizedExitTime = 0.75f)
         {
-            var currentStateInfo = animator.GetCurrentAnimatorStateInfo(layer);
-            
             animator.CrossFade(stateName, normalizedTransition, layer, normalizedStartTime);
 
-            bool WaitStateChange() => animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == currentStateInfo.fullPathHash || animator.GetCurrentAnimatorClipInfoCount(layer) < 1;
-            await UniTask.WaitWhile(WaitStateChange,PlayerLoopTiming.FixedUpdate);      // HACK: 需要考虑跳转到自身状态可能引起无限等待，也许需要超时取消？
+            bool WaitChangeComplete() => animator.GetCurrentAnimatorStateInfo(layer).IsName(stateName) && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
+            await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
             
             bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
             await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);

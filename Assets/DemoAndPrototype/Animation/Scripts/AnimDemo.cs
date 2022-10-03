@@ -4,13 +4,16 @@ using Cysharp.Threading.Tasks;
 using EGF.Runtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AnimDemo : MonoBehaviour
 {
     public Animator animator;
+    [FormerlySerializedAs("CompareAnimator")] public Animator compareAnimator;        // 对照，普通动画连接
     
     private readonly int jumpForward = Animator.StringToHash("Base Layer.jump-forward");
-    
+    private static readonly int StatusId = Animator.StringToHash("statusId");
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,19 +35,15 @@ public class AnimDemo : MonoBehaviour
     }
 
     [Button]
-    async UniTaskVoid PlayList()
+    async UniTaskVoid PlayListWithCompare()
     {
         // TODO: 动画取消，比如在播放该动作组时，角色突然死亡，将停止该动作组
-        // await animPlayer.Play("jump forward");
-        // await animPlayer.Play("Base Layer.rifle run");
-        // await animPlayer.Play("Base Layer.start walking backwards",0,0,0.3f);
         
-        // await animator.PlayOnce("jump-forward");
-        // await animator.PlayOnce("RifleRun2");
+        compareAnimator.SetInteger(StatusId, 0);
+        compareAnimator.SetTrigger("Test");
         
-        await animator.PlayOnce("start-walking-backwards");
-        await animator.PlayOnce("walking-backwards",0,0,0.15f,0.8f);
-        await animator.PlayOnce("walk-backwards-stop");
-        await animator.PlayOnce("Walking1");
+        await animator.PlayOnce("jump-forward");
+        await animator.PlayOnce("jump-backward");
+        await animator.PlayOnce("walking-to-dying");
     }
 }
