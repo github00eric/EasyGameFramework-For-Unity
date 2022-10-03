@@ -32,13 +32,27 @@ namespace EGF.Runtime
         /// <returns></returns>
         public static async UniTask PlayOnce(this Animator animator ,string stateName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.25f, float normalizedExitTime = 0.75f)
         {
+            var currentState = animator.GetCurrentAnimatorStateInfo(layer);
+            
             animator.CrossFade(stateName, normalizedTransition, layer, normalizedStartTime);
 
-            bool WaitChangeComplete() => animator.GetCurrentAnimatorStateInfo(layer).IsName(stateName) && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
-            await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
+            if (currentState.IsName(stateName))
+            {
+                bool WaitChange2SelfComplete()
+                {
+                    return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < currentState.normalizedTime;
+                }
+                await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate);
+            }
+            else
+            {
+                bool WaitChangeComplete() => animator.GetCurrentAnimatorStateInfo(layer).IsName(stateName) && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
+                await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
+            }
             
             bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
             await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);
+            Debug.Log("Done !!!");
         }
 
         public static async UniTask WaitForSeconds(this Animator animator, double waitTime, DelayType delayType = DelayType.DeltaTime)

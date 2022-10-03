@@ -46,4 +46,20 @@ public class AnimDemo : MonoBehaviour
         await animator.PlayOnce("jump-backward");
         await animator.PlayOnce("walking-to-dying");
     }
+
+    [Button]
+    async UniTaskVoid PlayRepeat()
+    {
+        await animator.PlayOnce("jump-forward");
+        await animator.PlayOnce("jump-forward");
+        await animator.PlayOnce("jump-forward");
+    }
+
+    [Button]
+    void PlayRepeatOneByOne()
+    {
+        animator.PlayOnce("jump-forward");
+        animator.PlayOnce("jump-forward");
+        animator.PlayOnce("jump-forward");
+    }
 }
