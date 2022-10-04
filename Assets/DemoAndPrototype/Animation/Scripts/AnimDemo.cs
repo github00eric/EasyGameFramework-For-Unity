@@ -12,6 +12,8 @@ public class AnimDemo : MonoBehaviour
     [FormerlySerializedAs("CompareAnimator")] public Animator compareAnimator;        // 对照，普通动画连接
     
     private readonly int jumpForward = Animator.StringToHash("Base Layer.jump-forward");
+    private readonly int jumpBackward = Animator.StringToHash("Base Layer.jump-backward");
+    private readonly int walking2Dying = Animator.StringToHash("Base Layer.walking-to-dying");
     private static readonly int StatusId = Animator.StringToHash("statusId");
 
     // Start is called before the first frame update
@@ -45,6 +47,13 @@ public class AnimDemo : MonoBehaviour
         await animator.PlayOnce("jump-forward");
         await animator.PlayOnce("jump-backward");
         await animator.PlayOnce("walking-to-dying");
+        
+        compareAnimator.SetInteger(StatusId, 0);
+        compareAnimator.SetTrigger("Test");
+        
+        await animator.PlayOnce(jumpForward);
+        await animator.PlayOnce(jumpBackward);
+        await animator.PlayOnce(walking2Dying);
     }
 
     [Button]
@@ -53,6 +62,10 @@ public class AnimDemo : MonoBehaviour
         await animator.PlayOnce("jump-forward");
         await animator.PlayOnce("jump-forward");
         await animator.PlayOnce("jump-forward");
+        
+        await animator.PlayOnce(jumpForward);
+        await animator.PlayOnce(jumpForward);
+        await animator.PlayOnce(jumpForward);
     }
 
     [Button]
