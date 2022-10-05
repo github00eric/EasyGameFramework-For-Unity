@@ -51,7 +51,7 @@ namespace EGF.Editor
         [DisplayAsString(false),HideLabel]
         public string introduce1 = "\nAbout EGFEntry:";
         
-        [TabGroup("IEventSystem")]
+        [TabGroup("IEventSystem | 事件系统")]
         [DisplayAsString(false),HideLabel]
         public string introduce2 = "\nAbout IEventSystem:";
     }
