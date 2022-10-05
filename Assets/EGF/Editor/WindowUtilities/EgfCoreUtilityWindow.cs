@@ -41,6 +41,18 @@ namespace EGF.Editor
             return tree;
         }
         
+        [Title("Introduction",null,TitleAlignments.Centered)]
+        [DisplayAsString(false),HideLabel]
+        public string mainIntroduce = "\n" +
+                                      "Welcome to use Easy Game Framework. \n" +
+                                      "You can get quick tutorial from tab pages below. \n";
         
+        [TabGroup("EGFEntry")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce1 = "\nAbout EGFEntry:";
+        
+        [TabGroup("IEventSystem")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce2 = "\nAbout IEventSystem:";
     }
 }
