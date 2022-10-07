@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+#if EGF_UniversalRP
+using UnityEngine.Rendering.Universal;
+#endif
+
 namespace EGF.Runtime
 {
     public class EgfUIManager : MonoSingleton<EgfUIManager>,IUIManager
