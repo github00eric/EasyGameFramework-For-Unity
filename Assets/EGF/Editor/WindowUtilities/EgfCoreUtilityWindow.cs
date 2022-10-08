@@ -41,6 +41,27 @@ namespace EGF.Editor
             return tree;
         }
         
+        [Title("Introduction",null,TitleAlignments.Centered)]
+        [DisplayAsString(false),HideLabel]
+        public string mainIntroduce = "\n" +
+                                      "Welcome to use Easy Game Framework. \n" +
+                                      "You can get quick tutorial from tab pages below. \n" +
+                                      "\n欢迎使用 Easy Game Framework。\n" +
+                                      "你可以在下方页签中找到对应功能的快速教程。\n";
         
+        [TabGroup("EGFEntry")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce1 = "\nAbout EGFEntry:";
+        
+        [TabGroup("IEventSystem | 事件系统")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce2 = "\nAbout IEventSystem:";
+        
+        // Line2-Utilities 介绍
+        [TabGroup("Utilities", "Coordinate | 坐标工具")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce3 = "\nUse Coordinate to transform position " +
+                                   "between world-coordinate, screen-coordinate, ui-coordinate. \n" +
+                                   "\n使用 Coordinate 计算空间坐标在世界坐标系、屏幕坐标系、ui坐标系的变换。";
     }
 }
