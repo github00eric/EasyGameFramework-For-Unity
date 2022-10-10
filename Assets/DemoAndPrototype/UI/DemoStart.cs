@@ -10,6 +10,7 @@ public class DemoStart : MonoBehaviour
     void Start()
     {
         uiManager = EgfEntry.GetModule<IUIManager>();
+        uiManager.SetViewCamera(Camera.main);
         uiManager.Show("StartPanel");
     }
 }

@@ -10,6 +10,12 @@ namespace EGF.Runtime
         Camera GetUiCamera();
         
         /// <summary>
+        /// 设置视图相机，让UI相机叠加显示在视图相机上
+        /// </summary>
+        /// <param name="viewCamera"></param>
+        void SetViewCamera(Camera viewCamera);
+        
+        /// <summary>
         /// 获得一个界面实例但此时不展示界面，可进一步初始化
         /// </summary>
         /// <param name="panelName"></param>

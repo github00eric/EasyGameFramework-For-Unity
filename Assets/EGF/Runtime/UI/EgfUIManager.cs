@@ -14,13 +14,14 @@ namespace EGF.Runtime
         [HideLabel, ReadOnly, Multiline(8)] 
         public string describe = "UI模块，提供UI功能接口 > IUIManager";
         
-        [Tooltip("场景中无 Canvas 时默认生成的 Canvas，| Canvas的 RendererMode 如果不为 overlay，请将 ui相机包含在预制体中。"),Sirenix.OdinInspector.Required,AssetsOnly]
+        [Tooltip("希望 ui系统 生成的 Canvas，| Canvas的 RendererMode 如果不为 overlay，请将 ui相机包含在预制体中。"),Sirenix.OdinInspector.Required,AssetsOnly]
         public Canvas defaultCanvas;
-        
+
         /// <summary>
         /// 场景画布缓存
         /// </summary>
-        [ShowInInspector,ReadOnly] Transform canvasTransform;
+        [ShowInInspector, ReadOnly] Canvas canvas;
+        Transform canvasTransform;
 
         /// <summary>
         /// Ui相机缓存
@@ -39,7 +40,8 @@ namespace EGF.Runtime
         protected override void Initialization()
         {
             panelStack = new Stack<UiView>();
-            canvasTransform = GetCanvasInternal();
+            canvas = GetCanvasInternal();
+            canvasTransform = canvas.transform;
 
             EgfEntry.RegisterModule<IUIManager>(this);
         }
@@ -72,16 +74,16 @@ namespace EGF.Runtime
                 return null;
             }
 
-            bp.transform.SetParent(GetCanvasInternal(), false);
+            bp.transform.SetParent(canvasTransform, false);
             bp.HideCanvasGroup();
             
             Logcat.Info(this,$"加载 Panel {bp.name} 成功. ");
             return bp;
         }
 
-        private Transform GetCanvasInternal()
+        private Canvas GetCanvasInternal()
         {
-            Transform result = canvasTransform;
+            Canvas result = canvas;
             if (result == null)
             {
                 Logcat.Info(this,"场景缺少画布，UI自动创建画布中");
@@ -93,9 +95,9 @@ namespace EGF.Runtime
                     {
                         Logcat.Warning(this,"画布模板使用渲染模式不为 ScreenSpaceOverlay 时，需要在预制体中准备好 UI相机，否则可能出错。");
                     }
-                    UpdateUICamera(temp.worldCamera);
+                    uiCamera = temp.worldCamera;
                 }
-                result = temp.transform;
+                result = temp;
             }
             return result;
         }
@@ -106,28 +108,18 @@ namespace EGF.Runtime
             return result;
         }
 
-        private Camera CameraMain()
-        {
-            var result = Camera.main;
-            if (result == null)
-            {
-                Logcat.Error(this,"未获取到场景中主相机。");
-            }
-            return result;
-        }
-
-        private void UpdateUICamera(Camera newUICamera)
+        private void UpdateUICamera(Camera newUICamera, Camera viewCamera)
         {
             uiCamera = newUICamera;
 #if EGF_BuildInRP || !EGF_UniversalRP
-            uiCamera.depth = CameraMain().depth + 1;
+            uiCamera.depth = viewCamera.depth + 1;
 #endif
 #if EGF_UniversalRP
             
             var cameraData = uiCamera.GetUniversalAdditionalCameraData();
             cameraData.renderType = CameraRenderType.Overlay;
             
-            var mainCameraData = CameraMain().GetUniversalAdditionalCameraData();
+            var mainCameraData = viewCamera.GetUniversalAdditionalCameraData();
             mainCameraData.cameraStack.Add(uiCamera);
 #endif
         }
@@ -155,6 +147,14 @@ namespace EGF.Runtime
         public Camera GetUiCamera()
         {
             return GetUICameraInternal();
+        }
+
+        public void SetViewCamera(Camera viewCamera)
+        {
+            if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                UpdateUICamera(GetUICameraInternal(), viewCamera);
+            }
         }
 
         public UiView GetUi(string panelName)
