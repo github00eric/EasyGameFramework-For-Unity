@@ -151,12 +151,20 @@ namespace EGF.Runtime
 
         async UniTask SceneLoadProgress(AsyncOperationHandle<SceneInstance> operationHandle, Action<float> progressHandler, CancellationToken cancellationToken)
         {
+            bool needProgress = progressHandler != null;
             while (operationHandle.PercentComplete < 1 && !cancellationToken.IsCancellationRequested)
             {
-                progressHandler(operationHandle.PercentComplete);
+                if (needProgress)
+                {
+                    progressHandler(operationHandle.PercentComplete);
+                }
                 await UniTask.Yield();
             }
-            progressHandler(1);
+
+            if (needProgress)
+            {
+                progressHandler(1);
+            }
         }
     }
 }
