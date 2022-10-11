@@ -6,8 +6,17 @@ namespace EGF.Runtime
     public interface IUIManager
     {
         // ----------------------------------------------------------------------------------------------------
-        
+        /// <summary>
+        /// 获取ui相机实例
+        /// </summary>
+        /// <returns></returns>
         Camera GetUiCamera();
+
+        /// <summary>
+        /// 获取ui画布实例
+        /// </summary>
+        /// <returns></returns>
+        Canvas GetUiCanvas();
         
         /// <summary>
         /// 设置视图相机，让UI相机叠加显示在视图相机上

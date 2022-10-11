@@ -84,21 +84,20 @@ namespace EGF.Runtime
         private Canvas GetCanvasInternal()
         {
             Canvas result = canvas;
-            if (result == null)
-            {
-                Logcat.Info(this,"场景缺少画布，UI自动创建画布中");
-                var temp = Instantiate(defaultCanvas,transform,false);
+            if (result != null) return result;
+            
+            Logcat.Info(this,"场景缺少画布，UI自动创建画布中");
+            var temp = Instantiate(defaultCanvas,transform,false);
                 
-                if (temp.renderMode != RenderMode.ScreenSpaceOverlay)
+            if (temp.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                if (temp.worldCamera == null)
                 {
-                    if (temp.worldCamera == null)
-                    {
-                        Logcat.Warning(this,"画布模板使用渲染模式不为 ScreenSpaceOverlay 时，需要在预制体中准备好 UI相机，否则可能出错。");
-                    }
-                    uiCamera = temp.worldCamera;
+                    Logcat.Warning(this,"画布模板使用渲染模式不为 ScreenSpaceOverlay 时，需要在预制体中准备好 UI相机，否则可能出错。");
                 }
-                result = temp;
+                uiCamera = temp.worldCamera;
             }
+            result = temp;
             return result;
         }
 
@@ -149,11 +148,17 @@ namespace EGF.Runtime
             return GetUICameraInternal();
         }
 
+        public Canvas GetUiCanvas()
+        {
+            return GetCanvasInternal();
+        }
+
         public void SetViewCamera(Camera viewCamera)
         {
-            if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            var uiCam = GetUICameraInternal();
+            if (uiCam != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
             {
-                UpdateUICamera(GetUICameraInternal(), viewCamera);
+                UpdateUICamera(uiCam, viewCamera);
             }
         }
 
