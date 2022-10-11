@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 namespace EGF.Runtime
 {
+    [RequireComponent(typeof(Button))]
+    [AddComponentMenu("EgfUI/Navigation2View", 10)]
     public class Navigation2View : MonoBehaviour
     {
         private Button button;
