@@ -60,8 +60,14 @@ namespace EGF.Editor
         // Line2-Utilities 介绍
         [TabGroup("Utilities", "Coordinate | 坐标工具")]
         [DisplayAsString(false),HideLabel]
-        public string introduce3 = "\nUse Coordinate to transform position " +
+        public string introduce2U3 = "\nUse [Coordinate] to transform position " +
                                    "between world-coordinate, screen-coordinate, ui-coordinate. \n" +
-                                   "\n使用 Coordinate 计算空间坐标在世界坐标系、屏幕坐标系、ui坐标系的变换。";
+                                   "\n使用 [Coordinate] 计算空间坐标在世界坐标系、屏幕坐标系、ui坐标系的变换。";
+        
+        [TabGroup("Utilities", "LogToScreen | 屏幕日志工具")]
+        [DisplayAsString(false),HideLabel]
+        public string introduce2U4 = "\nAdd [LogToScreen] to any GameObject can make console log to screen. " +
+                                   "\n" +
+                                   "\n添加 [LogToScreen] 到任意游戏对象上，Console就能将日志输出到屏幕上。";
     }
 }
