@@ -2,7 +2,7 @@
  "name": "eric.easy-game-framework",
  "displayName": "Easy Game Framework",
  "description": "Unity简易自用游戏框架EGF的核心框架，用于加速游戏原型开发，内置了多种付费插件，商用请谨慎。",
- "version": "0.1.5",
+ "version": "0.1.6",
  "unity": "2020.3",
  "dependencies": {
  },
