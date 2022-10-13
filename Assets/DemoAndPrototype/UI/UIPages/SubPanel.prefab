@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1050403898427118144}
   - component: {fileID: 7374498437347184062}
   - component: {fileID: 6522815150393939411}
+  - component: {fileID: 7692427286081447373}
   m_Layer: 5
   m_Name: Dragable
   m_TagString: Untagged
@@ -52,6 +53,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2180e5511b66e4de180fb216ba21a2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  constraintX: 1
+  constraintY: 0
+  onStartDrag:
+    m_PersistentCalls:
+      m_Calls: []
   onEndDrag:
     m_PersistentCalls:
       m_Calls: []
@@ -75,6 +81,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!222 &7692427286081447373
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613989178747679076}
+  m_CullTransparentMesh: 1
 --- !u!1 &4257229005183742104
 GameObject:
   m_ObjectHideFlags: 0

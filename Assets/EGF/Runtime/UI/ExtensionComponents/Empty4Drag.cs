@@ -19,6 +19,9 @@ namespace EGF.Runtime
         private RectTransform parentRec;                    //控件移动参考Rect
         private RectTransform thisRec;                      //控件自身Rect
 
+        public bool constraintX;
+        public bool constraintY;
+        public UnityEvent onStartDrag;
         public UnityEvent onEndDrag;
 
         private void Awake()
@@ -42,6 +45,8 @@ namespace EGF.Runtime
             // 屏幕空间鼠标位置eventData.position 转换为在画布空间的位置
             Camera uiCamera = eventData.pressEventCamera;
             mouseStartPos = Coordinate.Screen2UIAnchoredPosition(eventData.position, uiCamera, GetParentRectTransform());
+            
+            onStartDrag?.Invoke();
         }
         //拖拽中
         public void OnDrag(PointerEventData eventData)
@@ -52,6 +57,10 @@ namespace EGF.Runtime
             
             //鼠标移动在画布空间的位置增量
             Vector2 deltaPos = newMousePos - mouseStartPos;
+            if (constraintX)
+                deltaPos.x = 0;
+            if (constraintY)
+                deltaPos.y = 0;
             //原始位置增加位置增量即为现在位置
             thisRec.anchoredPosition = startPos + deltaPos;
         }
@@ -59,7 +68,6 @@ namespace EGF.Runtime
         public  void OnEndDrag(PointerEventData eventData)
         {
             onEndDrag?.Invoke();
-            Debug.Log("Drag over");
         }    
     }
 }
