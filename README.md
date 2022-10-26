@@ -30,9 +30,10 @@ Unity 的 Package Manager 支持安装 Git url 包的版本 (Unity >= 2019.3.4f1
 
 或者可以克隆该仓库，复制 ./Assets/EGF 路径的文件夹到工程中完成安装。
 
-依赖库：
+**依赖库：**
 - Addressables
 
 ## 使用说明
-- 当前仅供学习用途
+- 当前仅供学习参考用途，还处在早期版本，未经实际项目考验。
 - 内置付费插件Odin
+- 打开 "EGF Utility -> Open Utilities" 菜单，可以查看 EGF 的一些简要使用说明，并使用 EGF 的编辑器工具
