@@ -1,6 +1,11 @@
+/*
+ * EgfUIManager
+ * UI模块
+ * 
+ * 提供 UI 功能接口 > IUIManager
+ */
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 #if EGF_UniversalRP
@@ -11,31 +16,29 @@ namespace EGF.Runtime
 {
     public class EgfUIManager : MonoSingleton<EgfUIManager>,IUIManager
     {
-        [HideLabel, ReadOnly, Multiline(8)] 
-        public string describe = "UI模块，提供UI功能接口 > IUIManager";
-        
-        [Tooltip("希望 ui系统 生成的 Canvas，| Canvas的 RendererMode 如果不为 overlay，请将 ui相机包含在预制体中。"),Sirenix.OdinInspector.Required,AssetsOnly]
+        // 需要确保，有预制体配置
+        [Tooltip("希望 ui系统 生成的 Canvas，| Canvas的 RendererMode 如果不为 overlay，请将 ui相机包含在预制体中。")]
         public Canvas defaultCanvas;
 
         /// <summary>
         /// 场景画布缓存
         /// </summary>
-        [ShowInInspector, ReadOnly] Canvas canvas;
+        Canvas canvas;
         Transform canvasTransform;
 
         /// <summary>
         /// Ui相机缓存
         /// </summary>
-        [ShowInInspector, ReadOnly] Camera uiCamera;
+        Camera uiCamera;
 
         // Dictionary<string, UiView> floatPanelObjDic;
 
         /// <summary>
         /// 存放激活的 Panel 列表的栈
         /// </summary>
-        [Title("Panel Active:")]
+        [Header("Panel Active:")]
         [Tooltip("可查看当前已载入的UI页面和层级关系")]
-        [ShowInInspector,ReadOnly] Stack<UiView> panelStack;
+        Stack<UiView> panelStack;
         
         protected override void Initialization()
         {
