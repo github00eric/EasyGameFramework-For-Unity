@@ -18,7 +18,7 @@ namespace EGF.Runtime
         // CrossFade 是按照动画的自身时间进行混合。如果动画10秒，混合持续时间0.2，会在大概2秒后混合完成
         // CrossFadeInFixedTime 是按照实际时间进行混合。如果动画10秒，混合持续时间0.2，会在0.2秒后混合完成
 
-        private static readonly int StatusId = Animator.StringToHash("statusId");
+        private static readonly int StatusId = Animator.StringToHash("stateId");
         
         /// <summary>
         /// 直接过渡到指定动画状态播放一次
@@ -60,10 +60,10 @@ namespace EGF.Runtime
         }
 
         /// <summary>
-        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高
+        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高，必须是 fullPathHash（例如 "Base Layer.run")）
         /// </summary>
         /// <param name="animator"></param>
-        /// <param name="stateHashName">动画状态机Hash</param>
+        /// <param name="stateHashName">动画状态机 fullPathHash</param>
         /// <param name="layer">状态机所在层</param>
         /// <param name="normalizedStartTime">开始时间(归一化)</param>
         /// <param name="normalizedTransition">过渡耗时(归一化)</param>
