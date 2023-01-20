@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using EGF.Runtime;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -22,7 +21,7 @@ public class AnimDemo : MonoBehaviour
         
     }
 
-    [Button]
+    [ContextMenu("ResetPosition")]
     void ResetPosition()
     {
         var trans = animator.transform;
@@ -30,13 +29,13 @@ public class AnimDemo : MonoBehaviour
         trans.rotation = Quaternion.identity;
     }
 
-    [Button]
+    [ContextMenu("Play")]
     void Play(string stateName)
     {
         animator.PlayOnce(stateName);
     }
 
-    [Button]
+    [ContextMenu("PlayListWithCompare")]
     async UniTaskVoid PlayListWithCompare()
     {
         // TODO: 动画取消，比如在播放该动作组时，角色突然死亡，将停止该动作组
@@ -56,7 +55,7 @@ public class AnimDemo : MonoBehaviour
         await animator.PlayOnce(walking2Dying);
     }
 
-    [Button]
+    [ContextMenu("PlayRepeat")]
     async UniTaskVoid PlayRepeat()
     {
         await animator.PlayOnce("jump-forward");
@@ -68,7 +67,7 @@ public class AnimDemo : MonoBehaviour
         await animator.PlayOnce(jumpForward);
     }
 
-    [Button]
+    [ContextMenu("PlayRepeatOneByOne")]
     void PlayRepeatOneByOne()
     {
         animator.PlayOnce("jump-forward");

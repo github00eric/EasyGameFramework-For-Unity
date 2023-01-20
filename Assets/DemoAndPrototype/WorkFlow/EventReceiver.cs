@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class EventReceiver : MonoBehaviour
@@ -23,7 +22,6 @@ public class EventReceiver : MonoBehaviour
         eventSystem.AddEventListener<EventSender.SomeData>("Send Data",OnGetData);
     }
 
-    [ReadOnly]
     public string receivedData;
     
     private void OnGetData(EventSender.SomeData data)
@@ -40,7 +38,7 @@ public class EventReceiver : MonoBehaviour
     /// <summary>
     /// 错误反注册测试
     /// </summary>
-    [Button]
+    [ContextMenu("ErrorTest1")]
     private void ErrorTest1()
     {
         eventSystem.RemoveEventListener("Send Data",LogTest);

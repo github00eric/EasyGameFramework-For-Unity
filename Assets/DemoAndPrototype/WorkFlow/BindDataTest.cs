@@ -2,13 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
 public class BindDataTest : MonoBehaviour
 {
-    [ShowInInspector]
+    // [ShowInInspector]
     public BindingData<int> number;
     
     private void Start()
@@ -26,7 +25,7 @@ public class BindDataTest : MonoBehaviour
         });
     }
 
-    [Button]
+    [ContextMenu("AddNumber")]
     private void AddNumber()
     {
         number.Value++;
