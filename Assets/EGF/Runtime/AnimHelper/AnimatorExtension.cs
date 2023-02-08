@@ -60,10 +60,10 @@ namespace EGF.Runtime
         }
 
         /// <summary>
-        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高，必须是 fullPathHash（例如 "Base Layer.run")）
+        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高
         /// </summary>
         /// <param name="animator"></param>
-        /// <param name="stateHashName">动画状态机 fullPathHash</param>
+        /// <param name="stateHashName">动画状态机Hash</param>
         /// <param name="layer">状态机所在层</param>
         /// <param name="normalizedStartTime">开始时间(归一化)</param>
         /// <param name="normalizedTransition">过渡耗时(归一化)</param>
@@ -73,24 +73,35 @@ namespace EGF.Runtime
         {
             var currentState = animator.GetCurrentAnimatorStateInfo(layer);
             
+            if(!animator.isActiveAndEnabled) return;
+            
             animator.CrossFade(stateHashName, normalizedTransition, layer, normalizedStartTime);
 
             if (currentState.fullPathHash == stateHashName)
             {
                 bool WaitChange2SelfComplete()
                 {
+                    if (!animator) return true;
                     return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < currentState.normalizedTime;
                 }
                 await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate);
             }
             else
             {
-                bool WaitChangeComplete() => animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == stateHashName && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
+                bool WaitChangeComplete()
+                {
+                    if (!animator) return true;
+                    return animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == stateHashName && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
+                }
                 await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
             }
-            
-            bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
-            await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);
+
+            bool WaitExit()
+            {
+                if (!animator) return true;
+                return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime > normalizedExitTime;
+            }
+            await UniTask.WaitUntil(WaitExit,PlayerLoopTiming.FixedUpdate);
         }
         
         /// <summary>
