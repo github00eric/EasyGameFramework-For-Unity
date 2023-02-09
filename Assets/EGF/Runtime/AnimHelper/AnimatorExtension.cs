@@ -60,7 +60,7 @@ namespace EGF.Runtime
         }
 
         /// <summary>
-        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高
+        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高，这里必须是 fullPathHash（例如 "Base Layer.run"）
         /// </summary>
         /// <param name="animator"></param>
         /// <param name="stateHashName">动画状态机Hash</param>
