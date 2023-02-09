@@ -75,7 +75,11 @@ namespace NaughtyAttributes.Editor
 
                         elementHeightCallback = (int index) =>
                         {
-                            return EditorGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index)) + 4.0f;
+                            if (property.arraySize <= 0) return 4.0f;
+                            
+                            var elementProperty = property.GetArrayElementAtIndex(index);
+                            return EditorGUI.GetPropertyHeight(elementProperty) + 4.0f;
+
                         }
                     };
 
