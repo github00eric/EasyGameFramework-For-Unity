@@ -7,6 +7,13 @@ namespace EGF.Runtime
     public class Blackboard
     {
         private Dictionary<string, BlackboardData> blackboardData;
+        public Blackboard()
+        {
+            blackboardData = new Dictionary<string, BlackboardData>();
+        }
+        // ----------------------------------------------------------------------------------------------------
+        
+        public Dictionary<string, BlackboardData> BlackboardDataList => blackboardData;
 
         private BlackboardData GetData(string key)
         {
@@ -36,7 +43,7 @@ namespace EGF.Runtime
             }
             
             BlackboardDataType<T> data = blackboardData[key] as BlackboardDataType<T>;
-            // 有 Key 没 BlackboardDataType<T> 
+            // 有 Key 没 BlackboardDataType<T> 说明后续类型设置不对
             if (data == null || data.value.Equals(value))
             {
                 return;
@@ -85,10 +92,12 @@ namespace EGF.Runtime
 
     public abstract class BlackboardData
     {
+        public abstract string DataString { get; }
     }
 
     public class BlackboardDataType<T>: BlackboardData where T: IEquatable<T>
     {
+        public override string DataString => value.ToString();
         public T value;
         public BlackboardDataType(T value)
         {
@@ -98,6 +107,7 @@ namespace EGF.Runtime
 
     public class BlackboardReferenceData: BlackboardData, IEquatable<BlackboardReferenceData>, IEquatable<Object>
     {
+        public override string DataString => value.name;
         public Object value;
     
         public BlackboardReferenceData(Object obj)

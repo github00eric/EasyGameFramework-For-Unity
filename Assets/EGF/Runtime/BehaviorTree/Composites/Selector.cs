@@ -16,9 +16,9 @@ namespace EGF.Runtime
         }
 
         protected override State OnUpdate() {
-            for (int i = current; i < Children.Count; ++i) {
+            for (int i = current; i < children.Count; ++i) {
                 current = i;
-                var child = Children[current];
+                var child = children[current];
 
                 switch (child.Update()) {
                     case State.Running:

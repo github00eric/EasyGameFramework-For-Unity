@@ -12,7 +12,7 @@ namespace EGF.Runtime
 
         protected override void OnStart() {
             childrenLeftToExecute.Clear();
-            Children.ForEach(a => {
+            children.ForEach(a => {
                 childrenLeftToExecute.Add(State.Running);
             });
         }
@@ -24,7 +24,7 @@ namespace EGF.Runtime
             bool stillRunning = false;
             for (int i = 0; i < childrenLeftToExecute.Count(); ++i) {
                 if (childrenLeftToExecute[i] == State.Running) {
-                    var status = Children[i].Update();
+                    var status = children[i].Update();
                     if (status == State.Failure) {
                         AbortRunningChildren();
                         return State.Failure;
@@ -44,7 +44,7 @@ namespace EGF.Runtime
         void AbortRunningChildren() {
             for (int i = 0; i < childrenLeftToExecute.Count(); ++i) {
                 if (childrenLeftToExecute[i] == State.Running) {
-                    Children[i].Abort();
+                    children[i].Abort();
                 }
             }
         }

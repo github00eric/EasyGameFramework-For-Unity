@@ -23,7 +23,7 @@ namespace EGF.Runtime
                 return timeoutAsSuccess ? State.Success : State.Failure;
             }
 
-            return Children[0].Update();
+            return children[0].Update();
         }
     }
 }

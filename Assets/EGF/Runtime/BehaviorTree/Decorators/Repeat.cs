@@ -19,7 +19,7 @@ namespace EGF.Runtime
 
         protected override State OnUpdate()
         {
-            switch (Children[0].Update()) {
+            switch (children[0].Update()) {
                 case State.Running:
                     break;
                 case State.Failure:

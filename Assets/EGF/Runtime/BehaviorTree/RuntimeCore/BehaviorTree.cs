@@ -26,38 +26,22 @@ namespace EGF.Runtime
         }
         
         public static List<BTNode> GetChildren(BTNode parent) {
-            // List<BTNode> children = new List<BTNode>();
-            //
-            // switch (parent)
-            // {
-            //     case DecoratorNode decorator when decorator.child != null:
-            //         children.Add(decorator.child);
-            //         break;
-            //     
-            //     case RootNode rootNode when rootNode.child != null:
-            //         children.Add(rootNode.child);
-            //         break;
-            //     
-            //     case CompositeNode composite:
-            //         return composite.children;
-            // }
-            //
-            // return children;
-
             return parent.GetChildren();
         }
         
-        public static void Traverse(BTNode node, Action<BTNode> visiter)
+        public static void Traverse(BTNode node, Action<BTNode> traverseAction)
         {
             if (!node) return;
             
-            visiter.Invoke(node);
+            traverseAction.Invoke(node);
             var children = GetChildren(node);
-            children.ForEach((n) => Traverse(n, visiter));
+            children.ForEach((n) => Traverse(n, traverseAction));
         }
         
         public static BehaviorTree Clone(BehaviorTree prototype) {
-            BehaviorTree tree = Instantiate(prototype);
+            BehaviorTree tree = prototype.Copy() as BehaviorTree;
+            if (!tree) return null;
+            
             foreach (var node in tree.nodes)
             {
                 if (node is RootNode root)

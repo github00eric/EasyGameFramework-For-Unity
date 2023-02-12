@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using JCMG.Nodey;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace EGF.Runtime
@@ -25,25 +24,35 @@ namespace EGF.Runtime
         protected override State OnUpdate()
         {
             DataVisualize();
-            return Children[0].Update();
+            return children[0].Update();
         }
 
         // ----------------------------------------------------------------------------------------------------
         #region BlackboardPreview | 黑板数据可视化
 #if UNITY_EDITOR
-        public List<BbKeyValuePair> blackboardDataPreview;
-        
+        public List<BbKeyObjectPair> blackboardDataPreview;
+
         [Serializable]
-        public struct BbKeyValuePair
+        public struct BbKeyObjectPair
         {
             public string key;
-            public BlackboardData value;
+            public string value;
         }
+        
 
         [Conditional("UNITY_EDITOR")]
         private void DataVisualize()
         {
-            // blackboardDataPreview = ....
+            if (blackboardDataPreview == null)
+                blackboardDataPreview = new List<BbKeyObjectPair>();
+            
+            blackboardDataPreview.Clear();
+            foreach (var element in blackboard.BlackboardDataList)
+            {
+                var dataString = element.Value.DataString;
+                BbKeyObjectPair data = new BbKeyObjectPair() {key = element.Key, value = dataString};
+                blackboardDataPreview.Add(data);
+            }
         }
 #endif
         #endregion

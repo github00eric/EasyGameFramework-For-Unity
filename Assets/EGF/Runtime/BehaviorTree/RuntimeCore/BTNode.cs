@@ -28,8 +28,7 @@ namespace EGF.Runtime
         // [HideInInspector] public string guid = System.Guid.NewGuid().ToString();
         // [HideInInspector] public Vector2 position;
 
-        private List<BTNode> children = new List<BTNode>();
-        protected List<BTNode> Children => children;
+        protected List<BTNode> children = new List<BTNode>();
 
         public Context context;
         
@@ -64,14 +63,22 @@ namespace EGF.Runtime
         }
 
         // 行为树
-        public List<BTNode> GetChildren()
+        public virtual List<BTNode> GetChildren()
         {
             children.Clear();
             
             var outputPort = GetOutputPort("output");
-            if (outputPort == null) return children;
+            
+            Debug.Log($"{name} outputPort == null? : {outputPort == null}");    // outputPort != null
+            Debug.Log($"{name} outputPort is dynamic? : {outputPort.IsDynamic}");    // outputPort != null
+            if (outputPort == null)
+            {
+                return children;
+            }
             
             var childrenPort = outputPort.GetConnections();
+            var childrenPorts = outputPort;
+            Debug.Log($"{name} childrenPort Length? : {childrenPort.Count}");   // childrenPort.Count == 0
 
             foreach (var port in childrenPort)
             {
