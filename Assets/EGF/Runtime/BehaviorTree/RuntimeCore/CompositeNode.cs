@@ -15,8 +15,8 @@ namespace EGF.Runtime
         [Input(ShowBackingValue.Never,ConnectionType.Override)]
         public Connect input;
         
-        [Output(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.None,true)]
-        // [Output()]
+        // [Output(ShowBackingValue.Never,ConnectionType.Override,TypeConstraint.None,true)]
+        [Output()]
         public List<Connect> output = new List<Connect>();
 
         // public override List<BTNode> GetChildren()

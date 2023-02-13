@@ -69,17 +69,12 @@ namespace EGF.Runtime
             
             var outputPort = GetOutputPort("output");
             
-            Debug.Log($"{name} outputPort == null? : {outputPort == null}");    // outputPort != null
-            Debug.Log($"{name} outputPort is dynamic? : {outputPort.IsDynamic}");    // outputPort != null
             if (outputPort == null)
             {
                 return children;
             }
             
             var childrenPort = outputPort.GetConnections();
-            var childrenPorts = outputPort;
-            Debug.Log($"{name} childrenPort Length? : {childrenPort.Count}");   // childrenPort.Count == 0
-
             foreach (var port in childrenPort)
             {
                 if (port.IsConnected)
@@ -88,7 +83,26 @@ namespace EGF.Runtime
                 }
             }
 
+            if(children.Count>1)
+                children.Sort(CompareNodePriority);
+            
             return children;
+        }
+
+        // 比较运行权重，位置更上的优先运行
+        int CompareNodePriority(BTNode node1, BTNode node2)
+        {
+            if (!node1 && !node2)
+                return 0;
+            else if (!node1)
+                return -1;
+            else if (!node2)
+                return 1;
+
+            var value1 = node1.position.y;
+            var value2 = node2.position.y;
+
+            return value1.CompareTo(value2);
         }
 
         public virtual void OnDrawGizmos() { }
