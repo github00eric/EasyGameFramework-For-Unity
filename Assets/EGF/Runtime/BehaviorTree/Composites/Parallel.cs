@@ -5,10 +5,16 @@ using UnityEngine;
 
 namespace EGF.Runtime
 {
+    /*
+     * 平行节点 [Parallel]
+     * 同时执行所有子节点
+     * 任意节点失败将全部停止并返回失败
+     * 所有节点运行成功则停止并返回成功
+     */
     [CreateNodeMenu(CreatePath + "Parallel")]
     public class Parallel : CompositeNode
     {
-        List<State> childrenLeftToExecute = new List<State>();
+        protected readonly List<State> childrenLeftToExecute = new List<State>();
 
         protected override void OnStart() {
             childrenLeftToExecute.Clear();
@@ -22,7 +28,7 @@ namespace EGF.Runtime
 
         protected override State OnUpdate() {
             bool stillRunning = false;
-            for (int i = 0; i < childrenLeftToExecute.Count(); ++i) {
+            for (int i = 0; i < childrenLeftToExecute.Count; ++i) {
                 if (childrenLeftToExecute[i] == State.Running) {
                     var status = children[i].Update();
                     if (status == State.Failure) {
@@ -42,7 +48,7 @@ namespace EGF.Runtime
         }
 
         void AbortRunningChildren() {
-            for (int i = 0; i < childrenLeftToExecute.Count(); ++i) {
+            for (int i = 0; i < childrenLeftToExecute.Count; ++i) {
                 if (childrenLeftToExecute[i] == State.Running) {
                     children[i].Abort();
                 }

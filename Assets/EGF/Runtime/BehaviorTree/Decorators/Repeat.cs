@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EGF.Runtime
 {
-    [CreateNodeMenu(CreatePath + "RepeatNode")]
+    [CreateNodeMenu(CreatePath + "Repeat")]
     public class Repeat : DecoratorNode
     {
         public bool restartOnSuccess = true;

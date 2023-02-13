@@ -28,7 +28,7 @@ namespace EGF.Runtime
         // [HideInInspector] public string guid = System.Guid.NewGuid().ToString();
         // [HideInInspector] public Vector2 position;
 
-        protected List<BTNode> children = new List<BTNode>();
+        protected List<BTNode> children;
 
         public Context context;
         
@@ -61,35 +61,46 @@ namespace EGF.Runtime
                 node.OnStop();
             });
         }
-
-        // 行为树
+        
+        /// <summary>
+        /// 行为树遍历期间获取子节点函数，当需要新增特殊节点时请重写
+        /// </summary>
+        /// <returns></returns>
         public virtual List<BTNode> GetChildren()
         {
+            if (children == null)
+                children = new List<BTNode>();
+            
             children.Clear();
-            
-            var outputPort = GetOutputPort("output");
-            
-            if (outputPort == null)
-            {
-                return children;
-            }
-            
-            var childrenPort = outputPort.GetConnections();
-            foreach (var port in childrenPort)
-            {
-                if (port.IsConnected)
-                {
-                    children.Add(port.node as BTNode);
-                }
-            }
-
-            if(children.Count>1)
-                children.Sort(CompareNodePriority);
+            if (TryGetPortNodes("output", out var result))
+                children = result;
             
             return children;
         }
+        
+        protected bool TryGetPortNodes(string portName, out List<BTNode> connectPorts)
+        {
+            connectPorts = new List<BTNode>();
+            var ports = GetOutputPort(portName);
+            if (ports == null)
+                return false;
+        
+            var connections = ports.GetConnections();
+            foreach (var connection in connections)
+            {
+                if (connection.IsConnected)
+                {
+                    connectPorts.Add(connection.node as BTNode);
+                }
+            }
+        
+            if(connectPorts.Count > 1)
+                connectPorts.Sort(CompareNodePriority);
+            
+            return true;
+        }
 
-        // 比较运行权重，位置更上的优先运行
+        // 运行权重比较，位置更上的优先运行
         int CompareNodePriority(BTNode node1, BTNode node2)
         {
             if (!node1 && !node2)
