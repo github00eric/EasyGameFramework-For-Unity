@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -25,7 +26,7 @@ public class BindDataTest : MonoBehaviour
         });
     }
 
-    [ContextMenu("AddNumber")]
+    [Button]
     private void AddNumber()
     {
         number.Value++;

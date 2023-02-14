@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class EventReceiver : MonoBehaviour
@@ -38,7 +39,7 @@ public class EventReceiver : MonoBehaviour
     /// <summary>
     /// 错误反注册测试
     /// </summary>
-    [ContextMenu("ErrorTest1")]
+    [Button]
     private void ErrorTest1()
     {
         eventSystem.RemoveEventListener("Send Data",LogTest);
