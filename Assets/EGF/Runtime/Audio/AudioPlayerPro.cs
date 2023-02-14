@@ -1,6 +1,9 @@
+/*
+ * 声音播放模块Pro
+ * 需要和 Unity 的 AudioMixer 结合使用，以获得更强的音频效果
+ */
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -8,7 +11,7 @@ namespace EGF.Runtime
 {
     /// <summary>
     /// 声音播放模块Pro，需要和 Unity 的 AudioMixer 结合使用，以获得更强的音频效果
-    /// <para>暂未完成制作</para>
+    /// <para>TODO: 暂未完成制作</para>
     /// </summary>
     public class AudioPlayerPro : MonoSingleton<AudioPlayerPro>, IAudioPlayer,IAudioVolumeSetter
     {
@@ -16,10 +19,10 @@ namespace EGF.Runtime
         private IObjectPoolOptimizer optimizer;
         public AudioPlayerSetting setting;
         
-        [ReadOnly][SerializeField] private AudioSource bgmAudioSource;
-        [ReadOnly][SerializeField] private AudioMixerSnapshot currentActiveSnapshot;
+        [SerializeField] private AudioSource bgmAudioSource;
+        [SerializeField] private AudioMixerSnapshot currentActiveSnapshot;
         // 所有取出对象池的音频源缓存池
-        [ReadOnly][SerializeField] private List<AudioSource> activeAudioSources;
+        [SerializeField] private List<AudioSource> activeAudioSources;
         // 每次检查，将要归还对象池的音源列表
         private List<AudioSource> waitForReleaseAudios;
 

@@ -1,3 +1,5 @@
+#if UNITY_EDITOR && ODIN_INSPECTOR
+
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -19,9 +21,8 @@ namespace EGF.Editor
                                       "https://github.com/arimger/Unity-Editor-Toolbox \n" +
                                       "\n" +
                                       "AssetReferenceViewer | 资源引用关系可视化检查 \n" +
-                                      "https://github.com/SilverdaleGames/AssetReferenceViewer \n" +
-                                      "\n" +
-                                      "Asset Graph | 资源导入和设置Addressable 流程自动化 \n" +
-                                      "Package Manager -> (Preview) -> Asset Graph \n";
+                                      "https://github.com/SilverdaleGames/AssetReferenceViewer \n";
     }
 }
+
+#endif

@@ -1,3 +1,11 @@
+/*
+ * 全局设置页面
+ * 通过改变项目宏定义来设置EGF部分功能的启用和关闭
+ *
+ * 请在 ..[EGF]/Runtime/Base/EGFDefaultSetting.cs 文件中查看所有宏定义
+ */
+#if UNITY_EDITOR && ODIN_INSPECTOR
+
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
@@ -136,3 +144,5 @@ namespace EGF.Editor
         #endregion
     }
 }
+
+#endif

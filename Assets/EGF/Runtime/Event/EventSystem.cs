@@ -1,20 +1,20 @@
+/*
+ * 事件系统
+ * 提供模块接口 > IEventSystem
+ *
+ * 使用字符串管理的自定义事件系统，可方便地将代码函数注册为事件，并通过一串字符索引调用
+ */
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace EGF.Runtime
 {
     public class EventSystem : MonoSingleton<EventSystem>,IEventSystem
     {
-        [HideLabel,ReadOnly,Multiline(4)]
-        public string describe = "事件系统，提供模块接口 > IEventSystem" +
-                                 "\n使用字符串管理的自定义事件系统，可方便地将代码函数注册为事件，并通过一串字符索引调用";
-
         private bool _initialized;
         
-        [Title("Event List")]
-        [ShowInInspector]
+        [Header("Event List")]
         private readonly Dictionary<string, Delegate> _events
             = new Dictionary<string, Delegate>();
 

@@ -1,3 +1,5 @@
+#if UNITY_EDITOR && ODIN_INSPECTOR
+
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -149,3 +151,5 @@ namespace EGF.Editor
         
     }
 }
+
+#endif

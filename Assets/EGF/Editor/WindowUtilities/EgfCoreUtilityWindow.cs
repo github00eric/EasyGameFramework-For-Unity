@@ -1,3 +1,8 @@
+/*
+ * 
+ */
+#if UNITY_EDITOR && ODIN_INSPECTOR
+
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -71,3 +76,5 @@ namespace EGF.Editor
                                    "\n添加 [LogToScreen] 到任意游戏对象上，Console就能将日志输出到屏幕上。";
     }
 }
+
+#endif

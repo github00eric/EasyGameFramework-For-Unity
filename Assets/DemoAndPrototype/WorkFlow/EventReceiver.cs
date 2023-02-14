@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EGF.Runtime;
-using Sirenix.OdinInspector;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class EventReceiver : MonoBehaviour
@@ -23,7 +23,6 @@ public class EventReceiver : MonoBehaviour
         eventSystem.AddEventListener<EventSender.SomeData>("Send Data",OnGetData);
     }
 
-    [ReadOnly]
     public string receivedData;
     
     private void OnGetData(EventSender.SomeData data)

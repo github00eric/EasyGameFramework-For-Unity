@@ -1,24 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace EGF.Runtime
 {
     public class AudioPlayer : MonoSingleton<AudioPlayer>,IAudioPlayer,IAudioVolumeSetter
     {
-        [HideLabel,ReadOnly,Multiline(3)]
-        public string describe = "音频播放模块，提供音频相关接口" +
-                                 "\nIAudioPlayer控制音频播放" +
-                                 "\nIAudioVolumeSetter设置各个音量组音量";
-        
-        [ReadOnly][SerializeField] private AudioSource bgmAudioSource;
+        [SerializeField] private AudioSource bgmAudioSource;
         
         private IObjectPool<AudioSource> audioPool;
         private IObjectPoolOptimizer optimizer;
         // 所有取出对象池的音频源缓存池
-        [ReadOnly][SerializeField] private List<AudioSource> activeAudioSources;
+        [SerializeField] private List<AudioSource> activeAudioSources;
         // 每次检查，将要归还对象池的音源列表
         private List<AudioSource> waitForReleaseAudios;
         
@@ -28,9 +22,9 @@ namespace EGF.Runtime
             public string groupName = "Undefined Audio Group";
             [Range(0,1)] public float volume = 0.7f;
         }
-
-        [SerializeField][Title("音频组信息")]
-        private List<AudioGroupInfo> audioGroups = new List<AudioGroupInfo>(){new AudioGroupInfo(){groupName = "default"}};
+        
+        [Header("音频组信息")]
+        [SerializeField] private List<AudioGroupInfo> audioGroups = new List<AudioGroupInfo>(){new AudioGroupInfo(){groupName = "default"}};
 
         protected override void Initialization()
         {

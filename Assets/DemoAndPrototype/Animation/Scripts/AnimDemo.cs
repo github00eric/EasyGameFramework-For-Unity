@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using EGF.Runtime;
-using Sirenix.OdinInspector;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -30,7 +30,6 @@ public class AnimDemo : MonoBehaviour
         trans.rotation = Quaternion.identity;
     }
 
-    [Button]
     void Play(string stateName)
     {
         animator.PlayOnce(stateName);
