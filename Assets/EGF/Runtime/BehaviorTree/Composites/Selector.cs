@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace EGF.Runtime
 {
+    /*
+     * 选择器会依次执行多个节点
+     * 失败会继续下一个节点，直到有节点成功
+     */
     [CreateNodeMenu(CreatePath + "Selector")]
     public class Selector : CompositeNode
     {
