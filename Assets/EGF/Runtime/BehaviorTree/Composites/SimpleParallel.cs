@@ -11,6 +11,9 @@ namespace EGF.Runtime
      * 
      * 其余节点执行完毕会等待主任务执行完毕
      * 主任务执行完毕会取消所有未完成的其余任务
+     *
+     * 可以用作行为树的反应式节点，（例如，在执行行为 A 时，能对行为 B 做出立即反应）
+     * 在 mainAction 执行期间持续检测反应条件，需要做出反应时立即结束 mainAction 的执行，跳转到 SimpleParallel 外的节点
      */
     [CreateNodeMenu(CreatePath + "Simple Parallel")]
     public class SimpleParallel : Parallel
