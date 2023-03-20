@@ -52,16 +52,16 @@ namespace EGF.Runtime
             data.value = value;
         }
 
-        public Object GetObject(string key)
+        public T GetObject<T>(string key) where T: Object
         {
             BlackboardData result = GetData(key);
             if (result is BlackboardReferenceData type)
-                return type.value;
+                return type.value as T;
             
             return default;
         }
         
-        public void SetObject(string key, Object value)
+        public void SetObject<T>(string key, T value) where T: Object
         {
             if (!blackboardData.ContainsKey(key))
             {

@@ -12,7 +12,7 @@ namespace EGF.Runtime
         public RootNode rootNode;
         public BTNode.State treeState = BTNode.State.Running;
         
-        private Blackboard blackboard = new Blackboard();
+        public readonly Blackboard blackboard = new Blackboard();
         
         public BTNode.State Update()
         {

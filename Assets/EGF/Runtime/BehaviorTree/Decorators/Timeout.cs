@@ -20,6 +20,7 @@ namespace EGF.Runtime
         protected override State OnUpdate() {
             if (Time.time - startTime > duration)
             {
+                children[0].Abort();
                 return timeoutAsSuccess ? State.Success : State.Failure;
             }
 
