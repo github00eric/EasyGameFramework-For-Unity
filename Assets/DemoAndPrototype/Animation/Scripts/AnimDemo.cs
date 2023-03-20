@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using EGF.Runtime;
 using NaughtyAttributes;
@@ -73,5 +75,36 @@ public class AnimDemo : MonoBehaviour
         animator.PlayOnce("jump-forward");
         animator.PlayOnce("jump-forward");
         animator.PlayOnce("jump-forward");
+    }
+
+    [BoxGroup("Play Animator And Cancel")]
+    public float cancelTestTime = 1;
+    private CancellationTokenSource cts;
+    [Button]
+    async UniTaskVoid PlayAnimatorAndCancel()
+    {
+        // 创建取消令牌
+        if (cts != null)
+        {
+            cts.Cancel();
+            cts.Dispose();
+        }
+        cts = new CancellationTokenSource();
+        
+        // 定时取消
+        var task = UniTask.Action(async () =>
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(cancelTestTime));
+            cts.Cancel();
+        });
+        task.Invoke();
+        
+        // 播放
+        await animator.PlayOnce("jump-forward",cts.Token);
+        await animator.PlayOnce("jump-forward",cts.Token);
+        await animator.PlayOnce("jump-forward",cts.Token);
+        await animator.PlayOnce("jump-forward",cts.Token);
+        await animator.PlayOnce("jump-forward",cts.Token);
+        await animator.PlayOnce("jump-forward",cts.Token);
     }
 }

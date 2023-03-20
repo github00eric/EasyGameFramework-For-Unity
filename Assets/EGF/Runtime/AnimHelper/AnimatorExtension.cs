@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace EGF.Runtime
     // TODO: PlayOnceInFixedTime 直接过渡到指定动画状态播放一次，且播放持续时间将强制更改为指定时间
     // TODO: 切换播放状态
     // TODO: 整体播放速度设置（要考虑功能2对播放速度的影响）
-    // HACK: 需要考虑跳转到自身状态可能引起无限等待，也许需要超时取消？
     public static class AnimatorExtension
     {
         // （实测过渡时间不是很精确，且动画相关操作要在 FixedUpdate 中进行）
@@ -20,18 +20,10 @@ namespace EGF.Runtime
 
         private static readonly int StatusId = Animator.StringToHash("stateId");
         
-        /// <summary>
-        /// 直接过渡到指定动画状态播放一次
-        /// </summary>
-        /// <param name="animator"></param>
-        /// <param name="stateName">动画状态机名</param>
-        /// <param name="layer">状态机所在层</param>
-        /// <param name="normalizedStartTime">开始时间(归一化)</param>
-        /// <param name="normalizedTransition">过渡耗时(归一化)</param>
-        /// <param name="normalizedExitTime">退出时间(归一化)</param>
-        /// <returns></returns>
-        public static async UniTask PlayOnce(this Animator animator ,string stateName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.25f, float normalizedExitTime = 0.75f)
+        private static async UniTask PlayOnceInternal(this Animator animator ,string stateName, CancellationToken token,
+            int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.25f, float normalizedExitTime = 0.75f)
         {
+            if(token.IsCancellationRequested) return;           // 已经取消了就不播放
             var currentState = animator.GetCurrentAnimatorStateInfo(layer);
             
             animator.CrossFade(stateName, normalizedTransition, layer, normalizedStartTime);
@@ -40,23 +32,27 @@ namespace EGF.Runtime
             {
                 bool WaitChange2SelfComplete()
                 {
+                    if (!animator) return true;
                     return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < currentState.normalizedTime;
                 }
-                await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate);
+                await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate, token);
             }
             else
             {
-                bool WaitChangeComplete() => animator.GetCurrentAnimatorStateInfo(layer).IsName(stateName) && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
-                await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
+                bool WaitChangeComplete()
+                {
+                    if (!animator) return true;
+                    return animator.GetCurrentAnimatorStateInfo(layer).IsName(stateName) && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
+                }
+                await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate, token);
             }
-            
-            bool WaitExit() => animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < normalizedExitTime;
-            await UniTask.WaitWhile(WaitExit,PlayerLoopTiming.FixedUpdate);
-        }
 
-        public static async UniTask WaitForSeconds(this Animator animator, double waitTime, DelayType delayType = DelayType.DeltaTime)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), delayType, PlayerLoopTiming.FixedUpdate);
+            bool WaitExit()
+            {
+                if (!animator) return true;
+                return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime > normalizedExitTime;
+            }
+            await UniTask.WaitUntil(WaitExit,PlayerLoopTiming.FixedUpdate, token);
         }
 
         /// <summary>
@@ -64,13 +60,16 @@ namespace EGF.Runtime
         /// </summary>
         /// <param name="animator"></param>
         /// <param name="stateHashName">动画状态机Hash</param>
+        /// <param name="token"></param>
         /// <param name="layer">状态机所在层</param>
         /// <param name="normalizedStartTime">开始时间(归一化)</param>
         /// <param name="normalizedTransition">过渡耗时(归一化)</param>
         /// <param name="normalizedExitTime">退出时间(归一化)</param>
         /// <returns></returns>
-        public static async UniTask PlayOnce(this Animator animator ,int stateHashName, int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.15f, float normalizedExitTime = 0.8f)
+        private static async UniTask PlayOnceInternal(this Animator animator ,int stateHashName, CancellationToken token,
+            int layer = 0, float normalizedStartTime = 0, float normalizedTransition = 0.15f, float normalizedExitTime = 0.8f)
         {
+            if(token.IsCancellationRequested) return;           // 已经取消了就不播放
             var currentState = animator.GetCurrentAnimatorStateInfo(layer);
             
             if(!animator.isActiveAndEnabled) return;
@@ -84,7 +83,7 @@ namespace EGF.Runtime
                     if (!animator) return true;
                     return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime < currentState.normalizedTime;
                 }
-                await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate);
+                await UniTask.WaitUntil(WaitChange2SelfComplete, PlayerLoopTiming.FixedUpdate, token);
             }
             else
             {
@@ -93,7 +92,7 @@ namespace EGF.Runtime
                     if (!animator) return true;
                     return animator.GetCurrentAnimatorStateInfo(layer).fullPathHash == stateHashName && animator.GetCurrentAnimatorClipInfoCount(layer) > 0;
                 }
-                await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate);
+                await UniTask.WaitUntil(WaitChangeComplete, PlayerLoopTiming.FixedUpdate, token);
             }
 
             bool WaitExit()
@@ -101,11 +100,72 @@ namespace EGF.Runtime
                 if (!animator) return true;
                 return animator.GetCurrentAnimatorStateInfo(layer).normalizedTime > normalizedExitTime;
             }
-            await UniTask.WaitUntil(WaitExit,PlayerLoopTiming.FixedUpdate);
+            await UniTask.WaitUntil(WaitExit,PlayerLoopTiming.FixedUpdate, token);
+        }
+
+        #region API
+
+        /// <summary>
+        /// 直接过渡到指定动画状态播放一次
+        /// </summary>
+        public static async UniTask PlayOnce(this Animator animator, 
+            string stateName, 
+            int layer = 0, 
+            float normalizedStartTime = 0, 
+            float normalizedTransition = 0.25f,
+            float normalizedExitTime = 0.75f)
+        {
+            await PlayOnceInternal(animator, stateName, default(CancellationToken), layer, normalizedStartTime, normalizedTransition, normalizedExitTime);
+        }
+
+        /// <summary>
+        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高，这里必须是 fullPathHash（例如 "Base Layer.run"）
+        /// </summary>
+        public static async UniTask PlayOnce(this Animator animator, 
+            int stateHashName, 
+            int layer = 0, 
+            float normalizedStartTime = 0, 
+            float normalizedTransition = 0.15f,
+            float normalizedExitTime = 0.8f)
+        {
+            await PlayOnceInternal(animator, stateHashName, default(CancellationToken), layer, normalizedStartTime, normalizedTransition, normalizedExitTime);
+        }
+
+        /// <summary>
+        /// 直接过渡到指定动画状态播放一次
+        /// </summary>
+        public static async UniTask PlayOnce(this Animator animator, 
+            string stateName, 
+            CancellationToken token,
+            int layer = 0, 
+            float normalizedStartTime = 0, 
+            float normalizedTransition = 0.25f,
+            float normalizedExitTime = 0.75f)
+        {
+            await PlayOnceInternal(animator, stateName, token, layer, normalizedStartTime, normalizedTransition, normalizedExitTime);
+        }
+
+        /// <summary>
+        /// 直接过渡到指定动画状态播放一次，直接用 Hash 效率更高，这里必须是 fullPathHash（例如 "Base Layer.run"）
+        /// </summary>
+        public static async UniTask PlayOnce(this Animator animator, 
+            int stateHashName, 
+            CancellationToken token,
+            int layer = 0, 
+            float normalizedStartTime = 0, 
+            float normalizedTransition = 0.15f,
+            float normalizedExitTime = 0.8f)
+        {
+            await PlayOnceInternal(animator, stateHashName, token, layer, normalizedStartTime, normalizedTransition, normalizedExitTime);
+        }
+        
+        public static async UniTask WaitForSeconds(this Animator animator, double waitTime, DelayType delayType = DelayType.DeltaTime)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), delayType, PlayerLoopTiming.FixedUpdate);
         }
         
         /// <summary>
-        /// 设置 “statusId”
+        /// 设置 “statusId”，切换动画状态
         /// </summary>
         /// <param name="animator"></param>
         /// <param name="stateId"></param>
@@ -113,6 +173,8 @@ namespace EGF.Runtime
         {
             animator.SetInteger(StatusId, stateId);
         }
+
+        #endregion
 
         #region 废弃功能 | Abandon Function
 
