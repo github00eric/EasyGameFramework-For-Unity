@@ -60,5 +60,20 @@ namespace EGF.Runtime
             if (lfAngle > 180f) lfAngle -= 360f;
             return lfAngle;
         }
+
+        /// <summary>
+        /// 角度值的渐近过渡 - 自动沿着圆弧短边渐近
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="step"></param>
+        /// <returns></returns>
+        public static float AngleStepLerp(float start, float end, float step)
+        {
+            if (start - end > 180) end += 360;
+            if (start - end < -180) end -= 360;
+
+            return MathLerp.StepLerp(start, end, step);
+        }
     }
 }

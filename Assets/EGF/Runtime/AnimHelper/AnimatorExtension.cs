@@ -174,6 +174,11 @@ namespace EGF.Runtime
             animator.SetInteger(StatusId, stateId);
         }
 
+        public static int StateIdHash(this Animator animator)
+        {
+            return StatusId;
+        }
+
         #endregion
 
         #region 废弃功能 | Abandon Function
