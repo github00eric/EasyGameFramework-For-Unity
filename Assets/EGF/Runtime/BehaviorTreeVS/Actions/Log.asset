@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e66c6366d904e98bc83428217d4fd7, type: 3}
+  m_Name: Log
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[{"key":"Tick","label":null,"summary":null,"hideLabel":false}],"controlOutputDefinitions":[{"key":"NextTick","label":null,"summary":null,"hideLabel":false}],"valueInputDefinitions":[{"hasDefaultValue":false,"defaultValue":null,"_type":"System.Object","key":"message","label":null,"summary":null,"hideLabel":false}],"valueOutputDefinitions":[{"_type":"EGF.Runtime.Behavior.BehaviorTreeNode+State","key":"feedback","label":null,"summary":null,"hideLabel":false}],"title":"Log","summary":null,"pan":{"x":-91.0,"y":86.08669},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":-336.0,"y":-24.0},"guid":"22b8afd2-685e-47c4-8d54-6cb13bf69094","$version":"A","$type":"Unity.VisualScripting.GraphInput","$id":"13"},{"defaultValues":{},"position":{"x":84.0,"y":-24.0},"guid":"33fe4054-591e-48e9-917e-a3be674ed459","$version":"A","$type":"Unity.VisualScripting.GraphOutput","$id":"15"},{"chainable":false,"member":{"name":"Log","parameterTypes":["System.Object"],"targetType":"UnityEngine.Debug","targetTypeName":"UnityEngine.Debug","$version":"A"},"defaultValues":{},"position":{"x":-132.0,"y":-24.0},"guid":"51bbacf7-4a2a-448d-abe5-052c73ad8713","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"17"},{"type":"EGF.Runtime.Behavior.BehaviorTreeNode+State","value":{"$content":"Success","$type":"EGF.Runtime.Behavior.BehaviorTreeNode+State"},"defaultValues":{},"position":{"x":-204.0,"y":132.0},"guid":"b5937535-af9d-4957-ac8c-5b906b5a2238","$version":"A","$type":"Unity.VisualScripting.Literal","$id":"20"},{"sourceUnit":{"$ref":"17"},"sourceKey":"exit","destinationUnit":{"$ref":"15"},"destinationKey":"NextTick","guid":"641110a7-7e40-4016-b859-520eaecfd72b","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"13"},"sourceKey":"Tick","destinationUnit":{"$ref":"17"},"destinationKey":"enter","guid":"bc5be1e7-5ce5-488b-ba19-d9c6889568c7","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"13"},"sourceKey":"message","destinationUnit":{"$ref":"17"},"destinationKey":"%message","guid":"5ab9a42b-5015-4e6a-89d0-ce62c6b0284c","$type":"Unity.VisualScripting.ValueConnection"},{"sourceUnit":{"$ref":"20"},"sourceKey":"output","destinationUnit":{"$ref":"15"},"destinationKey":"feedback","guid":"3344d04a-f861-46bb-ac6f-dbea82fbb1cd","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []
