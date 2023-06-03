@@ -1,27 +1,26 @@
 #if VISUAL_SCRIPTING_ENABLE
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEngine;
 
 namespace EGF.Runtime.Behavior
 {
+    
+    [Serializable]
+    public enum BehaviorTreeState {
+        Running,
+        Failure,
+        Success
+    }
+    
     public abstract class BehaviorTreeNode : Unit
     {
-        [Serializable]
-        public enum State {
-            Running,
-            Failure,
-            Success
-        }
         
-        private State _state = State.Running;
+        private BehaviorTreeState _state = BehaviorTreeState.Running;
         private bool _started;
 
         [DoNotSerialize][Inspectable,InspectorLabel("Current State"),UnitHeaderInspectable()]
-        public State currentState => _state;
+        public BehaviorTreeState currentState => _state;
         // protected 
 
         [DoNotSerialize] public ControlInput tick;
@@ -34,19 +33,19 @@ namespace EGF.Runtime.Behavior
         
         protected abstract void OnStart();
         protected abstract void OnStop();
-        protected abstract State OnRunning(Flow flow);
+        protected abstract BehaviorTreeState OnRunning(Flow flow);
         
         
         protected override void Definition()
         {
             tick = ControlInput(nameof(tick), Tick);
             
-            stateDataOutput = ValueOutput<State>("state", flow => _state);
+            stateDataOutput = ValueOutput<BehaviorTreeState>("state", flow => _state);
         }
 
         private ControlOutput Tick(Flow flow)
         {
-            if (currentState == State.Running)
+            if (currentState == BehaviorTreeState.Running)
                 TickInternal(flow);
             return null;
         }
@@ -62,7 +61,7 @@ namespace EGF.Runtime.Behavior
             _state = OnRunning(flow);
 
             // stop
-            if (_state != State.Running) {
+            if (_state != BehaviorTreeState.Running) {
                 OnStop();
                 _started = false;
             }

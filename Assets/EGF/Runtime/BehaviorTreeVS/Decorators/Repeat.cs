@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+#if VISUAL_SCRIPTING_ENABLE
+
 using Unity.VisualScripting;
-using UnityEngine;
 
 namespace EGF.Runtime.Behavior
 {
@@ -33,27 +32,29 @@ namespace EGF.Runtime.Behavior
         {
         }
 
-        protected override State OnRunning(Flow flow)
+        protected override BehaviorTreeState OnRunning(Flow flow)
         {
             var childState = InvokeNextNode(flow);
             
             switch (childState) {
-                case State.Running:
+                case BehaviorTreeState.Running:
                     break;
-                case State.Failure:
+                case BehaviorTreeState.Failure:
                     if (_restartOnFailure) {
-                        return State.Running;
+                        return BehaviorTreeState.Running;
                     } else {
-                        return State.Failure;
+                        return BehaviorTreeState.Failure;
                     }
-                case State.Success:
+                case BehaviorTreeState.Success:
                     if (_restartOnSuccess) {
-                        return State.Running;
+                        return BehaviorTreeState.Running;
                     } else {
-                        return State.Success;
+                        return BehaviorTreeState.Success;
                     }
             }
-            return State.Running;
+            return BehaviorTreeState.Running;
         }
     }
 }
+
+#endif

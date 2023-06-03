@@ -1,10 +1,6 @@
 #if VISUAL_SCRIPTING_ENABLE
 
-using System.Collections;
-using System.Collections.Generic;
-using EGF.Runtime.Behavior;
 using Unity.VisualScripting;
-using UnityEngine;
 
 namespace EGF.Runtime.Behavior
 {
@@ -19,10 +15,10 @@ namespace EGF.Runtime.Behavior
         {
             base.Definition();
             nextTick = ControlOutput(nameof(nextTick));
-            stateFeedback = ValueInput<State>("feedback");
+            stateFeedback = ValueInput<BehaviorTreeState>("feedback");
         }
 
-        protected State InvokeNextNode(Flow flow)
+        protected BehaviorTreeState InvokeNextNode(Flow flow)
         {
             var stack = flow.PreserveStack();
             
@@ -31,7 +27,7 @@ namespace EGF.Runtime.Behavior
             
             flow.DisposePreservedStack(stack);
             
-            var childState = flow.GetValue<State>(stateFeedback);
+            var childState = flow.GetValue<BehaviorTreeState>(stateFeedback);
             return childState;
         }
     }

@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+#if VISUAL_SCRIPTING_ENABLE
+
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -21,13 +21,15 @@ namespace EGF.Runtime.Behavior
         {
         }
 
-        protected override State OnRunning(Flow flow)
+        protected override BehaviorTreeState OnRunning(Flow flow)
         {
             float timeRemaining = Time.time - _startTime;
             if (timeRemaining > duration) {
-                return State.Success;
+                return BehaviorTreeState.Success;
             }
-            return State.Running;
+            return BehaviorTreeState.Running;
         }
     }
 }
+
+#endif

@@ -1,10 +1,8 @@
 #if VISUAL_SCRIPTING_ENABLE
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Unity.VisualScripting;
-using UnityEngine;
 
 namespace EGF.Runtime.Behavior
 {
@@ -34,7 +32,7 @@ namespace EGF.Runtime.Behavior
             for (int i = 0; i < BranchCount; i++)
             {
                 var output = ControlOutput(i.ToString());
-                var feedback = ValueInput<State>(i.ToString());
+                var feedback = ValueInput<BehaviorTreeState>(i.ToString());
             
                 multiOutputs.Add(output);
                 multiFeedbacks.Add(feedback);
@@ -43,7 +41,7 @@ namespace EGF.Runtime.Behavior
             StateFeedbacks = multiFeedbacks.AsReadOnly();
         }
 
-        protected List<State> InvokeAllNextNodes(Flow flow)
+        protected List<BehaviorTreeState> InvokeAllNextNodes(Flow flow)
         {
             var stack = flow.PreserveStack();
 
@@ -55,26 +53,26 @@ namespace EGF.Runtime.Behavior
             
             flow.DisposePreservedStack(stack);
 
-            var childStates = new List<State>();
+            var childStates = new List<BehaviorTreeState>();
             foreach (var feedback in StateFeedbacks)
             {
-                var feedbackState = flow.GetValue<State>(feedback);
+                var feedbackState = flow.GetValue<BehaviorTreeState>(feedback);
                 childStates.Add(feedbackState);
             }
 
             return childStates;
         }
         
-        protected State InvokeNextNode(Flow flow, int index)
+        protected BehaviorTreeState InvokeNextNode(Flow flow, int index)
         {
-            if (index < 0 || index > StateFeedbacks.Count) return State.Failure;
+            if (index < 0 || index > StateFeedbacks.Count) return BehaviorTreeState.Failure;
             
             var stack = flow.PreserveStack();
             flow.Invoke(NextTicks[index]);
             flow.RestoreStack(stack);
             flow.DisposePreservedStack(stack);
             
-            var childState = flow.GetValue<State>(StateFeedbacks[index]);
+            var childState = flow.GetValue<BehaviorTreeState>(StateFeedbacks[index]);
             return childState;
         }
     }
