@@ -25,7 +25,7 @@ namespace EGF.Runtime.Behavior
 
         [DoNotSerialize] public ControlInput tick;
 
-        // [DoNotSerialize] public ValueInput cacheBlackboard;
+        [DoNotSerialize] public ValueInput abort;
         [DoNotSerialize] public ValueOutput stateDataOutput;
         
         // public abstract List<BehaviorTreeNode> GetChildren();
@@ -39,13 +39,16 @@ namespace EGF.Runtime.Behavior
         protected override void Definition()
         {
             tick = ControlInput(nameof(tick), Tick);
-            
+            abort = ValueInput<bool>(nameof(abort), false);
             stateDataOutput = ValueOutput<BehaviorTreeState>("state", flow => _state);
         }
 
-        private ControlOutput Tick(Flow flow)
+        protected virtual ControlOutput Tick(Flow flow)
         {
-            if (currentState == BehaviorTreeState.Running)
+            var abortConfirm = flow.GetValue<bool>(abort);
+            if (abortConfirm && _started)
+                Abort(flow);
+            else if (!abortConfirm)
                 TickInternal(flow);
             return null;
         }
@@ -65,6 +68,13 @@ namespace EGF.Runtime.Behavior
                 OnStop();
                 _started = false;
             }
+        }
+
+        protected virtual void Abort(Flow flow)
+        {
+            _started = false;
+            _state = BehaviorTreeState.Running;
+            OnStop();
         }
     }
 }

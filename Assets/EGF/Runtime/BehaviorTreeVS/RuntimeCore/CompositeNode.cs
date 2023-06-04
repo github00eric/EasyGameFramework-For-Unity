@@ -9,6 +9,8 @@ namespace EGF.Runtime.Behavior
     [UnitCategory("BehaviorTree/Composite")]
     public abstract class CompositeNode : BehaviorTreeNode
     {
+        private bool _nextAbort;
+        
         [SerializeAs(nameof(BranchCount))]
         private int _branchCount = 2;
     
@@ -20,11 +22,14 @@ namespace EGF.Runtime.Behavior
         }
         
         [DoNotSerialize] public ReadOnlyCollection<ControlOutput> NextTicks { get; private set; }
+        [DoNotSerialize] public ValueOutput nextAbort;
 
         [DoNotSerialize] public ReadOnlyCollection<ValueInput> StateFeedbacks { get; private set; }
 
         protected override void Definition()
         {
+            nextAbort = ValueOutput(nameof(nextAbort), flow => _nextAbort);
+            
             base.Definition();
             
             var multiOutputs = new List<ControlOutput>();
@@ -39,6 +44,15 @@ namespace EGF.Runtime.Behavior
             }
             NextTicks = multiOutputs.AsReadOnly();
             StateFeedbacks = multiFeedbacks.AsReadOnly();
+        }
+        
+        protected override void Abort(Flow flow)
+        {
+            _nextAbort = true;
+            InvokeAllNextNodes(flow);
+            _nextAbort = false;
+            
+            base.Abort(flow);
         }
 
         protected List<BehaviorTreeState> InvokeAllNextNodes(Flow flow)

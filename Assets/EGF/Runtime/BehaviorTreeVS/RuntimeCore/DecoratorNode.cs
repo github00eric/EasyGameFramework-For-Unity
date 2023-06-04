@@ -7,15 +7,29 @@ namespace EGF.Runtime.Behavior
     [UnitCategory("BehaviorTree/Decorator")]
     public abstract class DecoratorNode : BehaviorTreeNode
     {
+        private bool _nextAbort;
+        
         [DoNotSerialize] public ControlOutput nextTick;
+        [DoNotSerialize] public ValueOutput nextAbort;
 
         [DoNotSerialize] public ValueInput stateFeedback;
         
         protected override void Definition()
         {
+            nextAbort = ValueOutput(nameof(nextAbort), flow => _nextAbort);
+
             base.Definition();
             nextTick = ControlOutput(nameof(nextTick));
             stateFeedback = ValueInput<BehaviorTreeState>("feedback");
+        }
+        
+        protected override void Abort(Flow flow)
+        {
+            _nextAbort = true;
+            InvokeNextNode(flow);
+            _nextAbort = false;
+            
+            base.Abort(flow);
         }
 
         protected BehaviorTreeState InvokeNextNode(Flow flow)
