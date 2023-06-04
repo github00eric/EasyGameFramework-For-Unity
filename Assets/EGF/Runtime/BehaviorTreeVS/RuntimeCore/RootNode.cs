@@ -9,7 +9,8 @@ namespace EGF.Runtime.Behavior
     public class RootNode : BehaviorTreeNode
     {
         private bool _nextAbort;
-        
+
+        [DoNotSerialize] public ControlInput reset;
         [DoNotSerialize] public ControlOutput nextTick;
         [DoNotSerialize] public ValueOutput nextAbort;
 
@@ -20,6 +21,11 @@ namespace EGF.Runtime.Behavior
             nextAbort = ValueOutput(nameof(nextAbort), flow => _nextAbort);
 
             base.Definition();
+            reset = ControlInput(nameof(reset), flow =>
+            {
+                Abort(flow);
+                return null;
+            });
             nextTick = ControlOutput(nameof(nextTick));
             stateFeedback = ValueInput<BehaviorTreeState>("feedback");
         }
