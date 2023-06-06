@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 namespace EGF.Runtime.Behavior
 {
     [UnitCategory("BehaviorTree/Composite")]
+    [UnitSubtitle("BT Composite")]
     public abstract class CompositeNode : BehaviorTreeNode
     {
         private bool _nextAbort;

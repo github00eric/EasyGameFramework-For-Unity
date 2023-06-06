@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 namespace EGF.Runtime.Behavior
 {
     [UnitCategory("BehaviorTree/Action")]
+    [UnitSubtitle("BT Action")]
     public abstract class ActionNode : BehaviorTreeNode
     {
         

@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 namespace EGF.Runtime.Behavior
 {
     [UnitCategory("BehaviorTree/Decorator")]
+    [UnitSubtitle("BT Decorator")]
     public abstract class DecoratorNode : BehaviorTreeNode
     {
         private bool _nextAbort;

@@ -6,7 +6,8 @@ namespace EGF.Runtime.Behavior
 {
     [UnitCategory("BehaviorTree")]
     [TypeIcon(typeof(BoltUnityEvent))]
-    public class RootNode : BehaviorTreeNode
+    [UnitSubtitle("BT Root")]
+    public sealed class RootNode : BehaviorTreeNode
     {
         private bool _nextAbort;
 
