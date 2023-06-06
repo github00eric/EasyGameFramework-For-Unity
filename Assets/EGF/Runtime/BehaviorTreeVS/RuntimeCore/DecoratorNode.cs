@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 namespace EGF.Runtime.Behavior
 {
     [UnitCategory("BehaviorTree/Decorator")]
-    [UnitSubtitle("BT Decorator")]
+    [TypeIcon(typeof(UnityEngine.Rendering.VirtualTexturing.System))]
     public abstract class DecoratorNode : BehaviorTreeNode
     {
         private bool _nextAbort;

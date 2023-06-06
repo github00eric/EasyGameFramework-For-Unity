@@ -9,8 +9,13 @@ namespace EGF.Runtime.Behavior
     {
         float _startTime;
         
-        [Inspectable,InspectorLabel("Wait Time"),UnitHeaderInspectable("Wait Time")] 
-        public float duration = 1;
+        [DoNotSerialize] public ValueInput waitTime;
+
+        protected override void Definition()
+        {
+            base.Definition();
+            waitTime = ValueInput<float>(nameof(waitTime), 1);
+        }
         
         protected override void OnStart()
         {
@@ -23,6 +28,7 @@ namespace EGF.Runtime.Behavior
 
         protected override BehaviorTreeState OnRunning(Flow flow)
         {
+            var duration = flow.GetValue<float>(waitTime);
             float timeRemaining = Time.time - _startTime;
             if (timeRemaining > duration) {
                 return BehaviorTreeState.Success;

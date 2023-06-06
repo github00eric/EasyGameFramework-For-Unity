@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace EGF.Runtime.Behavior
 {
-    [TypeIcon(typeof(Timer))]
     public class RateLimit : DecoratorNode
     {
         private float _timer = 0.2f;
