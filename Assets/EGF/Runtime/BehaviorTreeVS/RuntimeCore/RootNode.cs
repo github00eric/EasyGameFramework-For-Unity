@@ -28,6 +28,8 @@ namespace EGF.Runtime.Behavior
             });
             nextTick = ControlOutput(nameof(nextTick));
             stateFeedback = ValueInput<BehaviorTreeState>("feedback");
+            
+            Requirement(stateFeedback, tick);
         }
 
         protected override void Abort(Flow flow)

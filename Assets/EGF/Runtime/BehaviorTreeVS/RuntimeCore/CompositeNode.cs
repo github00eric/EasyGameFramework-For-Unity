@@ -41,6 +41,8 @@ namespace EGF.Runtime.Behavior
             
                 multiOutputs.Add(output);
                 multiFeedbacks.Add(feedback);
+                
+                Requirement(feedback, tick);
             }
             NextTicks = multiOutputs.AsReadOnly();
             StateFeedbacks = multiFeedbacks.AsReadOnly();

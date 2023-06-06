@@ -19,6 +19,8 @@ namespace EGF.Runtime.Behavior
             mainState = ValueInput<BehaviorTreeState>(nameof(mainState));
             
             base.Definition();
+            
+            Requirement(mainState, tick);
         }
 
         BehaviorTreeState InvokeMainTask(Flow flow)
