@@ -218,6 +218,7 @@ namespace AddressablesMaster
             Addressables.Release(asset);
         }
 
+        // HACK: 出问题的代码，引用同一个资源的两个句柄释放时出问题
         public static void ReleaseAsset(AssetReference reference)
         {
             RuntimeKeyIsValid(reference, out var key, true);

@@ -21,8 +21,12 @@ namespace EGF.Runtime
         // ----------------------------------------------------------------------------------------------------
         // 直接载入并实例化游戏对象
         GameObject Instantiate(string path);
+        
+        [Obsolete("There are some issues when instantiate multiple AssetReference, use FixedAssetLoader.InstantiateAsync instead")]
         GameObject Instantiate(AssetReferenceT<GameObject> reference);
         UniTask<GameObject> InstantiateAsync(string path);
+        
+        [Obsolete("There are some issues when instantiate multiple AssetReference, use FixedAssetLoader.InstantiateAsync instead")]
         UniTask<GameObject> InstantiateAsync(AssetReferenceT<GameObject> reference);
         
         // ----------------------------------------------------------------------------------------------------

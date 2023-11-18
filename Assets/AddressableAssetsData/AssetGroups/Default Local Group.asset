@@ -41,6 +41,22 @@ MonoBehaviour:
     m_Address: NewScenePanel
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 58bd2c3b23ed64447a0b60c48f968992
+    m_Address: Scene1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b418894f6b3414a4e982d50ea540259c
+    m_Address: Scene2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 526083c5b1785b7489898bc262f3db60
+    m_Address: Assets/DemoAndPrototype/AssetLoad/Cube.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8f6b9770fee0d61408c31304dbe45823
+    m_Address: Cube 1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 81db165d00ae14ac98546726d72e3f88, type: 2}
   m_SchemaSet:
