@@ -1,5 +1,9 @@
 # EasyGameFramework
 
+> ## 注意 
+>
+> 该仓库暂停维护，我目前正在制作一款关于少女前线的TPS同人游戏，链接[点这里](https://blogcn.standby4xeee.top/projects/Project_GF_TPS)，我会在游戏制作过程中根据使用感受逐步改进 EasyGameFramework，并在游戏结束后再优化目前的EGF。
+
 ## 介绍
 
 用于快速原型游戏制作的游戏引擎中间代码框架。开发策略是易用度优先。不支持ECS下使用
